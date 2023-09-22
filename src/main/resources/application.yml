@@ -1,0 +1,24 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
+  error:
+    whitelabel:
+      enabled: true
+
+
+
+
+
+
+
+
+
+
+
+
+
