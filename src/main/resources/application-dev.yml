@@ -10,7 +10,7 @@ spring:
     username: master
     password: 1234
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
@@ -19,3 +19,15 @@ spring:
         format_sql: true
         use_sql_comments: true
         highlight_sql: true
+
+logging:
+  level:
+    root: info
+    org.springframework: info
+    org:
+      hibernate:
+        sql: debug
+        orm:
+          jdbc:
+            bind: trace
+
