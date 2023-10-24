@@ -2,12 +2,14 @@ package io.divetrip.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.divetrip.domain.entity.enumeration.Gender;
+import io.divetrip.validator.valid.EnumValue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -16,10 +18,11 @@ public class DiverRequestDto {
     @Setter
     @Getter
     @NoArgsConstructor
+    @ToString
     public static class DiverCreate {
         /* 이메일 */
         @Email
-        @NotBlank
+        @NotBlank(message = "이메일은 필수 입력 항목입니다.")
         private String email;
 
         /* 비밀번호 */
@@ -39,8 +42,9 @@ public class DiverRequestDto {
         private String givenName;
 
         /* 성별 */
-        @NotNull
-        private Gender gender;
+        @NotBlank
+        @EnumValue(enumClass = Gender.class, message = "성별은 'MALE', 'FEMALE'값만 입력 가능합니다.", ignoreCase = true)
+        private String gender;
 
         /* 생일 */
         @NotNull

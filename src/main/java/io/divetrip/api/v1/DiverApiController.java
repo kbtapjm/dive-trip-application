@@ -21,14 +21,19 @@ public class DiverApiController {
 
     private final DiverService diverService;
 
+    /**
+     * 다이버 등록
+     * @param dto
+     * @return
+     */
     @PostMapping(value = "/divers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createDiver(@Valid @RequestBody DiverRequestDto.DiverCreate dto) {
 
-        diverService.createDiver(dto);
+        String diverId = diverService.createDiver(dto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("")
-                .buildAndExpand("")
+                .path("/{diverId}")
+                .buildAndExpand(diverId)
                 .toUri();
 
         return ResponseEntity.created(location).build();

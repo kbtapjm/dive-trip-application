@@ -23,6 +23,7 @@ spring:
 logging:
   level:
     root: info
+    io.divetrip: debug
     org.springframework: info
     org:
       hibernate:

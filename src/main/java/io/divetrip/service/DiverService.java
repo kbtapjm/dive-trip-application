@@ -16,13 +16,19 @@ public class DiverService {
     private final DiverRepository diverRepository;
     private final DiverMapper diverMapper;
 
-    public void createDiver(DiverRequestDto.DiverCreate dto) {
+    /**
+     * 다이버 등록
+     * @param dto
+     * @return
+     */
+    public String createDiver(DiverRequestDto.DiverCreate dto) {
         if (diverRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("이미 등록된 e-mail 입니다.");
         }
 
         Diver diver = diverRepository.save(diverMapper.toEntity(dto));
-        log.debug("DiverService > createDiver > diver: {}", diver);
+
+        return diver.getDiverId().toString();
     }
 
 
