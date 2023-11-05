@@ -8,21 +8,19 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
 
 public class DiverRequestDto {
 
-    @Setter
     @Getter
-    @NoArgsConstructor
     @ToString
+    @NoArgsConstructor
     public static class DiverCreate {
         /* 이메일 */
         @Email
-        @NotBlank(message = "이메일은 필수 입력 항목입니다.")
+        @NotBlank(message = "{valid.default.empty}")
         private String email;
 
         /* 비밀번호 */

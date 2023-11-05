@@ -1,6 +1,6 @@
 package io.divetrip.exception.dto;
 
-import io.divetrip.enumeration.ErrorCode;
+import io.divetrip.enumeration.DiveTripError;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,14 +21,25 @@ public class ExceptionResponse {
     private int status;
     private List<FieldError> errors;
 
-    public ExceptionResponse(final ErrorCode errorCode, final List<FieldError> errors) {
-        this.message = errorCode.getMessage();
-        this.code = errorCode.getCode();
-        this.status = errorCode.getStatus();
+    public ExceptionResponse(final DiveTripError diveTripError) {
+        this.message = diveTripError.getMessage();
+        this.code = diveTripError.getCode();
+        this.status = diveTripError.getStatus();
+        this.errors = new ArrayList<>();
+    }
+
+    public ExceptionResponse(final DiveTripError diveTripError, final List<FieldError> errors) {
+        this.message = diveTripError.getMessage();
+        this.code = diveTripError.getCode();
+        this.status = diveTripError.getStatus();
         this.errors = errors;
     }
 
-    public static ExceptionResponse of(final ErrorCode errorCode, final BindingResult bindingResult) {
+    public static ExceptionResponse of(final DiveTripError diveTripError) {
+        return new ExceptionResponse(diveTripError);
+    }
+
+    public static ExceptionResponse of(final DiveTripError errorCode, final BindingResult bindingResult) {
         return new ExceptionResponse(errorCode, FieldError.of(bindingResult));
     }
 
