@@ -21,11 +21,6 @@ public class DiverApiController {
 
     private final DiverService diverService;
 
-    /**
-     * 다이버 등록
-     * @param dto
-     * @return
-     */
     @PostMapping(value = "/divers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createDiver(@Valid @RequestBody DiverRequestDto.DiverCreate dto) {
 

@@ -20,7 +20,7 @@ public class DiverRequestDto {
     public static class DiverCreate {
         /* 이메일 */
         @Email
-        @NotBlank(message = "{valid.default.empty}")
+        @NotBlank
         private String email;
 
         /* 비밀번호 */

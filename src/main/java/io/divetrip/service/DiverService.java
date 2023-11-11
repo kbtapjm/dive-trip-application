@@ -4,7 +4,6 @@ import io.divetrip.domain.entity.Diver;
 import io.divetrip.domain.repository.DiverRepository;
 import io.divetrip.dto.request.DiverRequestDto;
 import io.divetrip.enumeration.DiveTripError;
-import io.divetrip.exception.error.DiveTripException;
 import io.divetrip.mapper.DiverMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,7 @@ public class DiverService {
 
     public String createDiver(DiverRequestDto.DiverCreate dto) {
         if (diverRepository.existsByEmail(dto.getEmail())) {
-            throw new DiveTripException(DiveTripError.EMAIL_DUPLICATED, dto.getEmail());
+            throw DiveTripError.EMAIL_DUPLICATED.exception(dto.getEmail());
         }
 
         Diver diver = diverRepository.save(diverMapper.toEntity(dto));
