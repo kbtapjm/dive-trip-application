@@ -22,7 +22,7 @@ public class DiverApiController {
     private final DiverService diverService;
 
     @PostMapping(value = "/divers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createDiver(@Valid @RequestBody DiverRequestDto.DiverCreate dto) {
+    public ResponseEntity<?> createDiver(@Valid @RequestBody DiverRequestDto.CreateDiver dto) {
 
         String diverId = diverService.createDiver(dto);
 

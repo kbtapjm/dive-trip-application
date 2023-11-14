@@ -17,7 +17,7 @@ public class DiverRequestDto {
     @Getter
     @ToString
     @NoArgsConstructor
-    public static class DiverCreate {
+    public static class CreateDiver {
         /* 이메일 */
         @Email
         @NotBlank

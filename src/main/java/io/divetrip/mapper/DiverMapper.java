@@ -12,9 +12,9 @@ import org.mapstruct.ReportingPolicy;
  * unmappedTargetPolicy=ReportingPolicy.IGNORE: 일치하지 않는 필드를 무시
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface DiverMapper extends GenericMapper<DiverRequestDto.DiverCreate, Diver> {
+public interface DiverMapper extends GenericMapper<DiverRequestDto.CreateDiver, Diver> {
 
     @Override
     @Mapping(target = "createdBy", source = "email")
-    Diver toEntity(DiverRequestDto.DiverCreate diverCreate);
+    Diver toEntity(DiverRequestDto.CreateDiver diverCreate);
 }

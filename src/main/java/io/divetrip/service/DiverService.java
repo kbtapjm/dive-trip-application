@@ -19,7 +19,7 @@ public class DiverService {
     private final DiverRepository diverRepository;
     private final DiverMapper diverMapper;
 
-    public String createDiver(DiverRequestDto.DiverCreate dto) {
+    public String createDiver(DiverRequestDto.CreateDiver dto) {
         if (diverRepository.existsByEmail(dto.getEmail())) {
             throw DiveTripError.EMAIL_DUPLICATED.exception(dto.getEmail());
         }
@@ -30,6 +30,8 @@ public class DiverService {
     }
 
     public List<?> getDiversAll() {
+
+
         return null;
     }
 
