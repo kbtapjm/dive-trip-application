@@ -41,7 +41,7 @@ public class DiverRequestDto {
 
         /* 성별 */
         @NotBlank
-        @EnumValue(enumClass = Gender.class, message = "성별은 'MALE', 'FEMALE'값만 입력 가능합니다.", ignoreCase = true)
+        @EnumValue(enumClass = Gender.class, ignoreCase = true)
         private String gender;
 
         /* 생일 */
