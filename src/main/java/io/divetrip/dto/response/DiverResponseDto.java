@@ -1,8 +1,12 @@
 package io.divetrip.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.Email;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,14 +23,7 @@ public class DiverResponseDto {
     private UUID diverId;
 
     /* 이메일 */
-    @Email
     private String email;
-
-    /* 비밀번호 */
-    private String password;
-
-    /* 비밀번호 확인 */
-    private String passwordConfirm;
 
     /* 성 */
     private String familyName;

@@ -3,7 +3,7 @@ package io.divetrip;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "io.divetrip")
+@SpringBootApplication
 public class DiveTripApplication {
 
     public static void main(String[] args) {

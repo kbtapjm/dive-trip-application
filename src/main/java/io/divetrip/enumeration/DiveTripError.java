@@ -15,7 +15,8 @@ public enum DiveTripError {
     INTERNAL_SERVER_ERROR("E005", "internal.server.error", 500),
 
     // application
-    EMAIL_DUPLICATED("E101", "valid.email.already.exists", 400)
+    EMAIL_DUPLICATED("E101", "valid.email.already.exists", 400),
+    DIVER_NOT_FOUND("E102", "valid.diver.not.found", 404)
     ;
 
     private final String code;
