@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,14 +37,21 @@ public class DiverApiController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping(value = "/divers",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/divers", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getDivers() {
         return ResponseEntity.ok(diverService.getDiversAll());
     }
 
-    @GetMapping(value = "/divers/{diverId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/divers/{diverId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getDiver(@PathVariable UUID diverId) {
         return ResponseEntity.ok(diverService.getDiver(diverId));
+    }
+
+    @PutMapping(value = "/divers/{diverId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateDiver(@PathVariable UUID diverId, @Valid @RequestBody DiverRequestDto.UpdateDiver dto) {
+        diverService.updateDiver(diverId, dto);
+
+        return ResponseEntity.ok().build();
     }
 
 }

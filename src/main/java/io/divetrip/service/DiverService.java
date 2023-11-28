@@ -1,6 +1,7 @@
 package io.divetrip.service;
 
 import io.divetrip.domain.entity.Diver;
+import io.divetrip.domain.entity.enumeration.Gender;
 import io.divetrip.domain.repository.DiverRepository;
 import io.divetrip.dto.request.DiverRequestDto;
 import io.divetrip.dto.response.DiverResponseDto;
@@ -10,6 +11,7 @@ import io.divetrip.mapper.DiverResponseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +26,7 @@ public class DiverService {
     private final DiverCreateRequestMapper diverCreateRequestMapper;
     private final DiverResponseMapper diverResponseMapper;
 
+    @Transactional
     public String createDiver(DiverRequestDto.CreateDiver dto) {
         if (diverRepository.existsByEmail(dto.getEmail())) {
             throw DiveTripError.EMAIL_DUPLICATED.exception(dto.getEmail());
@@ -48,6 +51,25 @@ public class DiverService {
                 .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
 
         return diverResponseMapper.toDto(diver);
+    }
+
+    @Transactional
+    public void updateDiver(final UUID diverId, DiverRequestDto.UpdateDiver dto) {
+        Diver diver = diverRepository.findById(diverId)
+                .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
+
+        diver.update(
+                dto.getFamilyName(),
+                dto.getGivenName(),
+                Gender.findByValue(dto.getGender()),
+                dto.getBirthday(),
+                dto.getNationality(),
+                dto.getCountryCode(),
+                dto.getContactNumber(),
+                dto.getPassportNo(),
+                dto.getPassportExpiryDate(),
+                dto.getLicensed()
+        );
     }
 
 }

@@ -6,6 +6,7 @@ import io.divetrip.validator.valid.EnumValue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,7 +17,7 @@ public class DiverRequestDto {
 
     @Getter
     @ToString
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class CreateDiver {
         /* 이메일 */
         @Email
@@ -72,7 +73,49 @@ public class DiverRequestDto {
         private Boolean licensed;
     }
 
-    public static class DiverUpdate {
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class UpdateDiver {
+
+        /* 성 */
+        @NotBlank
+        private String familyName;
+
+        /* 이름 */
+        @NotBlank
+        private String givenName;
+
+        /* 성별 */
+        @NotBlank
+        @EnumValue(enumClass = Gender.class, ignoreCase = true)
+        private String gender;
+
+        /* 생일 */
+        @NotNull
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private LocalDate birthday;
+
+        /* 국적 */
+        private String nationality;
+
+        /* 국가 코드 */
+        private String countryCode;
+
+        /* 연락처 */
+        private String contactNumber;
+
+        /* 여권 번호 */
+        @NotBlank
+        private String passportNo;
+
+        /* 여권 만료일 */
+        @NotNull
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private LocalDate passportExpiryDate;
+
+        /* 라이센스 여부 */
+        @NotNull
+        private Boolean licensed;
 
     }
 }
