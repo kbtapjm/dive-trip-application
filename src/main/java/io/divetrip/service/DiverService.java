@@ -72,5 +72,12 @@ public class DiverService {
         );
     }
 
+    public void deleteDiver(final UUID diverId) {
+        Diver diver = diverRepository.findById(diverId)
+                .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
+
+        diverRepository.deleteById(diverId);
+    }
+
 }
 
