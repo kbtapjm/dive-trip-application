@@ -3,13 +3,17 @@ package io.divetrip.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.divetrip.domain.entity.enumeration.Gender;
 import io.divetrip.validator.valid.EnumValue;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 
@@ -26,6 +30,8 @@ public class DiverRequestDto {
 
         /* 비밀번호 */
         @NotBlank
+        @Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%]).{6,20})", message = "{valid.diver.password.pattern}")
+        @Size(min = 6, max = 20)
         private String password;
 
         /* 비밀번호 확인 */
@@ -34,10 +40,12 @@ public class DiverRequestDto {
 
         /* 성 */
         @NotBlank
+        @Size(min = 1, max = 10)
         private String familyName;
 
         /* 이름 */
         @NotBlank
+        @Size(min = 1, max = 25)
         private String givenName;
 
         /* 성별 */
@@ -71,6 +79,15 @@ public class DiverRequestDto {
         /* 라이센스 여부 */
         @NotNull
         private Boolean licensed;
+
+        @AssertTrue(message = "{valid.diver.passwordConfirm.notMatch}")
+        public boolean isPasswordConfirm() {
+            if (!StringUtils.isEmpty(this.password) && !StringUtils.isEmpty(this.passwordConfirm)) {
+                return StringUtils.equals(this.password, this.passwordConfirm);
+            }
+
+            return false;
+        }
     }
 
     @Getter
@@ -79,10 +96,12 @@ public class DiverRequestDto {
 
         /* 성 */
         @NotBlank
+        @Size(min = 1, max = 10)
         private String familyName;
 
         /* 이름 */
         @NotBlank
+        @Size(min = 1, max = 25)
         private String givenName;
 
         /* 성별 */
