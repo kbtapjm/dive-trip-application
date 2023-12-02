@@ -10,6 +10,7 @@ import io.divetrip.mapper.DiverCreateRequestMapper;
 import io.divetrip.mapper.DiverResponseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class DiverService {
     private final DiverRepository diverRepository;
     private final DiverCreateRequestMapper diverCreateRequestMapper;
     private final DiverResponseMapper diverResponseMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public String createDiver(DiverRequestDto.CreateDiver dto) {
@@ -32,9 +34,7 @@ public class DiverService {
             throw DiveTripError.EMAIL_DUPLICATED.exception(dto.getEmail());
         }
 
-        // TODO: 비밀번호 암호화 처리(스프링 시큐리티 적용후에)
-
-        Diver diver = diverRepository.save(diverCreateRequestMapper.toEntity(dto));
+        Diver diver = diverRepository.save(diverCreateRequestMapper.toEntity(dto, passwordEncoder.encode(dto.getPassword())));
 
         return diver.getDiverId().toString();
     }

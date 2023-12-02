@@ -41,6 +41,17 @@ public class GolbalExceptionHandler {
                 .body(ExceptionResponse.of(error.getCode(), messageUtils.getMessage(error.getMessage(), e.getArgs()), error.getStatus()));
     }
 
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<ExceptionResponse> exceptionHandler(Exception e) {
+        log.error("exceptionHandler: {}", e);
+
+        DiveTripError error = DiveTripError.INTERNAL_SERVER_ERROR;
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ExceptionResponse.of(error.getCode(), e.getMessage(), error.getStatus()));
+    }
+
     private HttpStatus getHttpStatus(int status) {
         HttpStatus httpStatus = null;
 
