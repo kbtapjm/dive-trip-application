@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,7 +27,7 @@ public class DiverApiController {
 
     private final DiverService diverService;
 
-    @PostMapping(value = "/divers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/divers", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createDiver(@Valid @RequestBody DiverRequestDto.CreateDiver dto) {
         String diverId = diverService.createDiver(dto);
 
@@ -48,18 +49,25 @@ public class DiverApiController {
         return ResponseEntity.ok(diverService.getDiver(diverId));
     }
 
-    @PutMapping(value = "/divers/{diverId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/divers/{diverId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateDiver(@PathVariable UUID diverId, @Valid @RequestBody DiverRequestDto.UpdateDiver dto) {
         diverService.updateDiver(diverId, dto);
 
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/divers/{diverId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/divers/{diverId}")
     public ResponseEntity<?> deleteDiver(@PathVariable UUID diverId) {
         diverService.deleteDiver(diverId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/divers/{diverId}/password", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateDiverPassword(@PathVariable UUID diverId, @Valid @RequestBody DiverRequestDto.UpdatePassword dto) {
+        diverService.updateDiverPassword(diverId, dto);
+
+        return ResponseEntity.ok().build();
     }
 
 }

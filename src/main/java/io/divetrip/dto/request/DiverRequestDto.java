@@ -141,4 +141,34 @@ public class DiverRequestDto {
         private Boolean licensed;
 
     }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class UpdatePassword {
+
+        /* 이전 비밀번호 */
+        @NotBlank
+        private String oldPassword;
+
+        /* 새 비밀번호 */
+        @NotBlank
+        @Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%]).{6,20})", message = "{valid.diver.password.pattern}")
+        @Size(min = 6, max = 20)
+        private String newPassword;
+
+        /* 새 비밀번호 확인 */
+        @NotBlank
+        private String newPasswordConfirm;
+
+        @AssertTrue(message = "{valid.diver.passwordConfirm.notMatch}")
+        public boolean isNewPasswordConfirm() {
+            if (!StringUtils.isEmpty(this.newPassword) && !StringUtils.isEmpty(this.newPasswordConfirm)) {
+                return StringUtils.equals(this.newPassword, this.newPasswordConfirm);
+            }
+
+            return false;
+        }
+
+    }
+
 }

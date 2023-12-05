@@ -10,6 +10,7 @@ import io.divetrip.mapper.DiverCreateRequestMapper;
 import io.divetrip.mapper.DiverResponseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +78,21 @@ public class DiverService {
                 .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
 
         diverRepository.deleteById(diverId);
+    }
+
+    @Transactional
+    public void updateDiverPassword(final UUID diverId, DiverRequestDto.UpdatePassword dto) {
+        Diver diver = diverRepository.findById(diverId)
+                .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
+
+        if (!passwordEncoder.matches(dto.getOldPassword(), diver.getPassword())) {
+            throw DiveTripError.DIVER_PASSWORD_NOT_MATCH.exception();
+        }
+        if (StringUtils.equals(dto.getOldPassword(), dto.getNewPassword())) {
+            throw DiveTripError.DIVER_PASSWORD_CAN_NOT_SAME.exception();
+        }
+
+        diver.changePassword(passwordEncoder.encode(dto.getNewPassword()));
     }
 
 }
