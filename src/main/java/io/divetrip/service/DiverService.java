@@ -40,24 +40,21 @@ public class DiverService {
         return diver.getDiverId().toString();
     }
 
-    public List<?> getDiversAll() {
-        // TODO: convert to resources dto
+    public List<DiverResponseDto.Divers> getDiversAll() {
         return diverRepository.findAll().stream()
-                .map(diverResponseMapper::toDto)
+                .map(diverResponseMapper::toDiversDto)
                 .collect(Collectors.toList());
     }
 
-    public DiverResponseDto getDiver(final UUID diverId) {
-        Diver diver = diverRepository.findById(diverId)
-                .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
+    public DiverResponseDto.Diver getDiver(final UUID diverId) {
+        Diver diver = this.getDiverByDiverId(diverId);
 
-        return diverResponseMapper.toDto(diver);
+        return diverResponseMapper.toDiverDto(diver);
     }
 
     @Transactional
     public void updateDiver(final UUID diverId, DiverRequestDto.UpdateDiver dto) {
-        Diver diver = diverRepository.findById(diverId)
-                .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
+        Diver diver = this.getDiverByDiverId(diverId);
 
         diver.update(
                 dto.getFamilyName(),
@@ -74,16 +71,14 @@ public class DiverService {
     }
 
     public void deleteDiver(final UUID diverId) {
-        Diver diver = diverRepository.findById(diverId)
-                .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
+        this.getDiverByDiverId(diverId);
 
         diverRepository.deleteById(diverId);
     }
 
     @Transactional
     public void updateDiverPassword(final UUID diverId, DiverRequestDto.UpdatePassword dto) {
-        Diver diver = diverRepository.findById(diverId)
-                .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
+        Diver diver = this.getDiverByDiverId(diverId);
 
         if (!passwordEncoder.matches(dto.getOldPassword(), diver.getPassword())) {
             throw DiveTripError.DIVER_PASSWORD_NOT_MATCH.exception();
@@ -93,6 +88,11 @@ public class DiverService {
         }
 
         diver.changePassword(passwordEncoder.encode(dto.getNewPassword()));
+    }
+
+    private Diver getDiverByDiverId(final UUID diverId) {
+        return diverRepository.findById(diverId)
+                .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
     }
 
 }
