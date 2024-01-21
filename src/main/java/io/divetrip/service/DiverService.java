@@ -3,6 +3,8 @@ package io.divetrip.service;
 import io.divetrip.domain.entity.Diver;
 import io.divetrip.domain.entity.enumeration.Gender;
 import io.divetrip.domain.repository.DiverRepository;
+import io.divetrip.dto.PageDto;
+import io.divetrip.dto.SearchDto;
 import io.divetrip.dto.request.DiverRequestDto;
 import io.divetrip.dto.response.DiverResponseDto;
 import io.divetrip.enumeration.DiveTripError;
@@ -11,11 +13,12 @@ import io.divetrip.mapper.DiverResponseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,10 +43,14 @@ public class DiverService {
         return diver.getDiverId().toString();
     }
 
-    public List<DiverResponseDto.Divers> getDiversAll() {
-        return diverRepository.findAll().stream()
-                .map(diverResponseMapper::toDiversDto)
-                .collect(Collectors.toList());
+    public DiverResponseDto.DiversPage getDiversAll(PageDto pageDto, SearchDto searchDto) {
+        PageRequest pageRequest = PageRequest.of(pageDto.getPageNo(), pageDto.getPageSize(), searchDto.getPageSort());
+
+        Page<Diver> page = diverRepository.findAll(pageRequest);
+
+        return DiverResponseDto.DiversPage.builder()
+                .content(page.getContent().stream().map(diverResponseMapper::toDiversDto).collect(Collectors.toList()))
+                .build();
     }
 
     public DiverResponseDto.Diver getDiver(final UUID diverId) {

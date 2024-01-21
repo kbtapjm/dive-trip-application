@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class DiverResponseDto {
@@ -129,5 +130,12 @@ public class DiverResponseDto {
         private LocalDateTime updateAt;
     }
 
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    public static class DiversPage {
+        private List<Divers> content = List.of();
+    }
 
 }
