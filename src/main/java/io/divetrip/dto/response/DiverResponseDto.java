@@ -1,6 +1,8 @@
 package io.divetrip.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.divetrip.dto.PageDto;
+import io.divetrip.dto.SearchDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -135,7 +137,16 @@ public class DiverResponseDto {
     @AllArgsConstructor
     @Builder
     public static class DiversPage {
+
+        /* 컨텐트 */
         private List<Divers> content = List.of();
+
+        /* Page 정보 */
+        private PageDto page;
+
+        /* Search 정보 */
+        private SearchDto search;
+
     }
 
 }

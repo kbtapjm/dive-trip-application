@@ -42,112 +42,16 @@ public class DiverApiController {
         return ResponseEntity.created(location).build();
     }
 
-    /**
-     *
-     * {
-     *   "content": [
-     *     {
-     *       "diverId": "88413517-dc4d-4fe9-a5ed-b119e579a1e3",
-     *       "email": "tapjm@naver.com",
-     *       "password": "$2a$10$Ua8.RZGziIHGzcbJ56yItepJPfDW3Jiy1Yx3.6tNR/cPmseltENom",
-     *       "familyName": "park",
-     *       "givenName": "jaemyung",
-     *       "gender": "MALE",
-     *       "birthday": "1982-05-09",
-     *       "nationality": null,
-     *       "countryCode": null,
-     *       "contactNumber": null,
-     *       "passportNo": "M80120775",
-     *       "passportExpiryDate": "2027-05-04",
-     *       "licensed": true,
-     *       "createdBy": "tapjm@naver.com",
-     *       "createdAt": "2024-01-21T10:09:10.668875",
-     *       "updatedBy": null,
-     *       "updateAt": null
-     *     },
-     *     {
-     *       "diverId": "71732250-e4ea-44df-bbab-91a3d799b7d4",
-     *       "email": "tapjmj@naver.com",
-     *       "password": "$2a$10$IqHmIZT28M13ZgbjK6UQy.r3l1xZbQETetnk3.1UX4bxpW//FD1S6",
-     *       "familyName": "박",
-     *       "givenName": "재명2",
-     *       "gender": "MALE",
-     *       "birthday": "1982-05-09",
-     *       "nationality": null,
-     *       "countryCode": null,
-     *       "contactNumber": null,
-     *       "passportNo": "M80120775",
-     *       "passportExpiryDate": "2027-05-04",
-     *       "licensed": false,
-     *       "createdBy": "tapjmj@naver.com",
-     *       "createdAt": "2023-12-06T23:32:11.774969",
-     *       "updatedBy": null,
-     *       "updateAt": null
-     *     },
-     *     {
-     *       "diverId": "ff831f32-8a38-463f-8bef-efa519b54a50",
-     *       "email": "kbtapjm@gmail.com",
-     *       "password": "$2a$10$oHHbNL6d7oM51JW1DL/Bo.l6hYDnVx7rzNuoQFe8ZklStcSvXw1k2",
-     *       "familyName": "박",
-     *       "givenName": "재명",
-     *       "gender": "MALE",
-     *       "birthday": "1982-05-09",
-     *       "nationality": null,
-     *       "countryCode": null,
-     *       "contactNumber": null,
-     *       "passportNo": "M80120775",
-     *       "passportExpiryDate": "2027-05-04",
-     *       "licensed": true,
-     *       "createdBy": "kbtapjm@gmail.com",
-     *       "createdAt": "2023-12-02T22:39:24.057425",
-     *       "updatedBy": "kbtapjm@gmail.com",
-     *       "updateAt": "2023-12-05T22:57:22.587184"
-     *     }
-     *   ],
-     *   "pageable": {
-     *     "pageNumber": 0,
-     *     "pageSize": 10,
-     *     "sort": {
-     *       "empty": false,
-     *       "sorted": true,
-     *       "unsorted": false
-     *     },
-     *     "offset": 0,
-     *     "paged": true,
-     *     "unpaged": false
-     *   },
-     *   "last": true,
-     *   "totalPages": 1,
-     *   "totalElements": 3,
-     *   "size": 10,
-     *   "number": 0,
-     *   "sort": {
-     *     "empty": false,
-     *     "sorted": true,
-     *     "unsorted": false
-     *   },
-     *   "first": true,
-     *   "numberOfElements": 3,
-     *   "empty": false
-     * }
-     *
-     * @param sort
-     * @param orderBy
-     * @param q
-     * @param pageNo
-     * @param pageSize
-     * @return
-     */
     @GetMapping(value = "/divers", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getDivers(
+            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
             @RequestParam(value = "sort", required = false, defaultValue = "") String sort,
             @RequestParam(value = "orderBy", required = false, defaultValue = "") String orderBy,
-            @RequestParam(value = "q", required = false, defaultValue = "") String q,
-            @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize
+            @RequestParam(value = "q", required = false, defaultValue = "") String q
     ) {
         PageDto pageDto = PageDto.builder()
-                .pageNo(pageNo)
+                .pageNumber(pageNumber)
                 .pageSize(pageSize)
                 .build();
 

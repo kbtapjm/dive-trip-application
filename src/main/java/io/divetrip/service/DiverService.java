@@ -43,13 +43,45 @@ public class DiverService {
         return diver.getDiverId().toString();
     }
 
+    /**
+     * {
+     *   "pageable": {
+     *     "pageNumber": 0,
+     *     "pageSize": 10,
+     *     "sort": {
+     *       "empty": false,
+     *       "sorted": true,
+     *       "unsorted": false
+     *     },
+     *     "offset": 0,
+     *     "paged": true,
+     *     "unpaged": false
+     *   },
+     *   "last": true,
+     *   "totalPages": 1,
+     *   "totalElements": 3,
+     *   "size": 10,
+     *   "number": 0,
+     *   "sort": {
+     *     "empty": false,
+     *     "sorted": true,
+     *     "unsorted": false
+     *   },
+     *   "first": true,
+     *   "numberOfElements": 3,
+     *   "empty": false
+     * }
+     */
     public DiverResponseDto.DiversPage getDiversAll(PageDto pageDto, SearchDto searchDto) {
-        PageRequest pageRequest = PageRequest.of(pageDto.getPageNo(), pageDto.getPageSize(), searchDto.getPageSort());
+        PageRequest pageRequest = PageRequest.of(pageDto.getPageNumber(), pageDto.getPageSize(), searchDto.getPageSort());
 
         Page<Diver> page = diverRepository.findAll(pageRequest);
+        pageDto.setPage(pageDto.getPageNumber(), pageDto.getPageSize(), page.getTotalElements(), page.getTotalPages());
 
         return DiverResponseDto.DiversPage.builder()
                 .content(page.getContent().stream().map(diverResponseMapper::toDiversDto).collect(Collectors.toList()))
+                .page(pageDto)
+                .search(searchDto)
                 .build();
     }
 
