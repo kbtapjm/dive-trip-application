@@ -46,8 +46,8 @@ public class DiverApiController {
     public ResponseEntity<?> getDivers(
             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
-            @RequestParam(value = "sort", required = false, defaultValue = "") String sort,
-            @RequestParam(value = "orderBy", required = false, defaultValue = "") String orderBy,
+            @RequestParam(value = "sort", required = false, defaultValue = "createdAt") String sort,
+            @RequestParam(value = "orderBy", required = false, defaultValue = "desc") String orderBy,
             @RequestParam(value = "q", required = false, defaultValue = "") String q
     ) {
         PageDto pageDto = PageDto.builder()
@@ -55,7 +55,6 @@ public class DiverApiController {
                 .pageSize(pageSize)
                 .build();
 
-        // TODO: 정렬 대상이 컬럼에 없는경우 에러가 발생함, 그래서 정렬 타겟도 강제적으로 값을 ENUM으로 지정해서 불필요한 값이 넘어 오지 않게 처리 필요
         SearchDto searchDto = SearchDto.builder()
                 .sort(sort)
                 .orderBy(orderBy)

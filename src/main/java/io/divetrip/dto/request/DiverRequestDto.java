@@ -171,4 +171,14 @@ public class DiverRequestDto {
 
     }
 
+    @Getter
+    @AllArgsConstructor
+    public enum Sort {
+        CREATEDAT("createdAt"),
+        UPDATEDAT("updatedAt");
+
+        /* 정렬 대상 컬럼 */
+        private final String sortColumn;
+    }
+
 }
