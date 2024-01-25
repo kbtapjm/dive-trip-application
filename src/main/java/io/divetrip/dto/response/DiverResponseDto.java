@@ -1,6 +1,7 @@
 package io.divetrip.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.divetrip.dto.AddressDto;
 import io.divetrip.dto.PageDto;
 import io.divetrip.dto.SearchDto;
 import lombok.AccessLevel;
@@ -59,6 +60,9 @@ public class DiverResponseDto {
         /* 라이센스 여부 */
         private Boolean licensed;
 
+        /* 주소 */
+        private AddressDto address;
+
         /* 등록자 */
         private String createdBy;
 
@@ -71,7 +75,7 @@ public class DiverResponseDto {
 
         /* 수정일 */
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
-        private LocalDateTime updateAt;
+        private LocalDateTime updatedAt;
     }
 
     @Getter
@@ -117,6 +121,9 @@ public class DiverResponseDto {
         /* 라이센스 여부 */
         private Boolean licensed;
 
+        /* 주소 */
+        private AddressDto address;
+
         /* 등록자 */
         private String createdBy;
 
@@ -129,9 +136,38 @@ public class DiverResponseDto {
 
         /* 수정일 */
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
-        private LocalDateTime updateAt;
+        private LocalDateTime updatedAt;
     }
 
+    /**
+     * {
+     *   "pageable": {
+     *     "pageNumber": 0,
+     *     "pageSize": 10,
+     *     "sort": {
+     *       "empty": false,
+     *       "sorted": true,
+     *       "unsorted": false
+     *     },
+     *     "offset": 0,
+     *     "paged": true,
+     *     "unpaged": false
+     *   },
+     *   "last": true,
+     *   "totalPages": 1,
+     *   "totalElements": 3,
+     *   "size": 10,
+     *   "number": 0,
+     *   "sort": {
+     *     "empty": false,
+     *     "sorted": true,
+     *     "unsorted": false
+     *   },
+     *   "first": true,
+     *   "numberOfElements": 3,
+     *   "empty": false
+     * }
+     */
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor

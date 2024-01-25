@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DiverCreateRequestMapper extends GenericMapper<DiverRequestDto.CreateDiver, Diver> {
 
-    @Mapping(target = "password", source = "password")
-    @Mapping(target = "createdBy", source = "diverCreate.email")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "diverCreate.email", target = "createdBy")
     Diver toEntity(DiverRequestDto.CreateDiver diverCreate, String password);
 }

@@ -43,35 +43,6 @@ public class DiverService {
         return diver.getDiverId().toString();
     }
 
-    /**
-     * {
-     *   "pageable": {
-     *     "pageNumber": 0,
-     *     "pageSize": 10,
-     *     "sort": {
-     *       "empty": false,
-     *       "sorted": true,
-     *       "unsorted": false
-     *     },
-     *     "offset": 0,
-     *     "paged": true,
-     *     "unpaged": false
-     *   },
-     *   "last": true,
-     *   "totalPages": 1,
-     *   "totalElements": 3,
-     *   "size": 10,
-     *   "number": 0,
-     *   "sort": {
-     *     "empty": false,
-     *     "sorted": true,
-     *     "unsorted": false
-     *   },
-     *   "first": true,
-     *   "numberOfElements": 3,
-     *   "empty": false
-     * }
-     */
     public DiverResponseDto.DiversPage getDiversAll(PageDto pageDto, SearchDto searchDto) {
         PageRequest pageRequest = PageRequest.of(pageDto.getPageNumber(), pageDto.getPageSize(), searchDto.getPageSort());
 
@@ -105,7 +76,10 @@ public class DiverService {
                 dto.getContactNumber(),
                 dto.getPassportNo(),
                 dto.getPassportExpiryDate(),
-                dto.getLicensed()
+                dto.getLicensed(),
+                dto.getAddress().getCity(),
+                dto.getAddress().getStreet(),
+                dto.getAddress().getZipCode()
         );
     }
 

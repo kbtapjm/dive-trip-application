@@ -2,6 +2,7 @@ package io.divetrip.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.divetrip.domain.entity.enumeration.Gender;
+import io.divetrip.dto.AddressDto;
 import io.divetrip.validator.valid.EnumValue;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
@@ -84,6 +85,9 @@ public class DiverRequestDto {
         @NotNull
         private Boolean licensed;
 
+        /* 주소 */
+        private AddressDto address;
+
         @AssertTrue(message = "{valid.diver.passwordConfirm.notMatch}")
         public boolean isPasswordConfirm() {
             if (!StringUtils.isEmpty(this.password) && !StringUtils.isEmpty(this.passwordConfirm)) {
@@ -140,6 +144,9 @@ public class DiverRequestDto {
         @NotNull
         private Boolean licensed;
 
+        /* 주소 */
+        private AddressDto address;
+
     }
 
     @Getter
@@ -174,8 +181,8 @@ public class DiverRequestDto {
     @Getter
     @AllArgsConstructor
     public enum Sort {
-        CREATEDAT("createdAt"),
-        UPDATEDAT("updatedAt");
+        CREATED_AT("createdAt"),
+        UPDATED_AT("updatedAt");
 
         /* 정렬 대상 컬럼 */
         private final String sortColumn;
