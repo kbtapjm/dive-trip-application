@@ -4,12 +4,12 @@ import io.divetrip.domain.entity.Diver;
 import io.divetrip.domain.entity.enumeration.Gender;
 import io.divetrip.domain.repository.DiverRepository;
 import io.divetrip.dto.PageDto;
-import io.divetrip.dto.SearchDto;
 import io.divetrip.dto.request.DiverRequestDto;
 import io.divetrip.dto.response.DiverResponseDto;
 import io.divetrip.enumeration.DiveTripError;
 import io.divetrip.mapper.DiverCreateRequestMapper;
 import io.divetrip.mapper.DiverResponseMapper;
+import io.divetrip.service.support.DiverSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -43,10 +43,10 @@ public class DiverService {
         return diver.getDiverId().toString();
     }
 
-    public DiverResponseDto.DiversPage getDiversAll(PageDto pageDto, SearchDto searchDto) {
+    public DiverResponseDto.DiversPage getDiversAll(PageDto pageDto, DiverRequestDto.SearchDiver searchDto) {
         PageRequest pageRequest = PageRequest.of(pageDto.getPageNumber(), pageDto.getPageSize(), searchDto.getPageSort());
 
-        Page<Diver> page = diverRepository.findAll(pageRequest);
+        Page<Diver> page = diverRepository.findAll(new DiverSpecification(searchDto), pageRequest);
         pageDto.setPage(pageDto.getPageNumber(), pageDto.getPageSize(), page.getTotalElements(), page.getTotalPages());
 
         return DiverResponseDto.DiversPage.builder()

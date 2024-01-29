@@ -3,7 +3,7 @@ package io.divetrip.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.divetrip.dto.AddressDto;
 import io.divetrip.dto.PageDto;
-import io.divetrip.dto.SearchDto;
+import io.divetrip.dto.request.DiverRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -181,7 +181,7 @@ public class DiverResponseDto {
         private PageDto page;
 
         /* Search 정보 */
-        private SearchDto search;
+        private DiverRequestDto.SearchDiver search;
 
     }
 

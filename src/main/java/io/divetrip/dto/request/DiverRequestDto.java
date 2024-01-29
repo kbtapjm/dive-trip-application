@@ -3,6 +3,7 @@ package io.divetrip.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.divetrip.domain.entity.enumeration.Gender;
 import io.divetrip.dto.AddressDto;
+import io.divetrip.dto.SortDto;
 import io.divetrip.validator.valid.EnumValue;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
@@ -16,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
@@ -23,10 +25,10 @@ import java.time.LocalDate;
 public class DiverRequestDto {
 
     @Getter
-    @ToString
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
+    @ToString
     public static class CreateDiver {
         /* 이메일 */
         @Email
@@ -100,6 +102,7 @@ public class DiverRequestDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @ToString
     public static class UpdateDiver {
 
         /* 성 */
@@ -151,6 +154,7 @@ public class DiverRequestDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @ToString
     public static class UpdatePassword {
 
         /* 이전 비밀번호 */
@@ -175,6 +179,21 @@ public class DiverRequestDto {
 
             return false;
         }
+
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @SuperBuilder
+    @AllArgsConstructor
+    @ToString(callSuper = true)
+    public static class SearchDiver extends SortDto {
+
+        /* 이름 */
+        private String name;
+
+        /* 성별 */
+        private String gender;
 
     }
 

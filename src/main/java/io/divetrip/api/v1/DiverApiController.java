@@ -1,7 +1,6 @@
 package io.divetrip.api.v1;
 
 import io.divetrip.dto.PageDto;
-import io.divetrip.dto.SearchDto;
 import io.divetrip.dto.request.DiverRequestDto;
 import io.divetrip.service.DiverService;
 import jakarta.validation.Valid;
@@ -48,17 +47,19 @@ public class DiverApiController {
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
             @RequestParam(value = "sort", required = false, defaultValue = "createdAt") String sort,
             @RequestParam(value = "orderBy", required = false, defaultValue = "desc") String orderBy,
-            @RequestParam(value = "q", required = false, defaultValue = "") String q
+            @RequestParam(value = "name", required = false, defaultValue = "") String name,
+            @RequestParam(value = "gender", required = false, defaultValue = "") String gender
     ) {
         PageDto pageDto = PageDto.builder()
                 .pageNumber(pageNumber)
                 .pageSize(pageSize)
                 .build();
 
-        SearchDto searchDto = SearchDto.builder()
+        DiverRequestDto.SearchDiver searchDto = DiverRequestDto.SearchDiver.builder()
                 .sort(sort)
                 .orderBy(orderBy)
-                .q(q)
+                .name(name)
+                .gender(gender)
                 .build();
 
         return ResponseEntity.ok(diverService.getDiversAll(pageDto, searchDto));
