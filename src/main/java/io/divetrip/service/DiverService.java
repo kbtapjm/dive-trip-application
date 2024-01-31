@@ -43,13 +43,13 @@ public class DiverService {
         return diver.getDiverId().toString();
     }
 
-    public DiverResponseDto.DiversPage getDiversAll(PageDto pageDto, DiverRequestDto.SearchDiver searchDto) {
+    public DiverResponseDto.DiverList getDiversAll(PageDto pageDto, DiverRequestDto.SearchDiver searchDto) {
         PageRequest pageRequest = PageRequest.of(pageDto.getPageNumber(), pageDto.getPageSize(), searchDto.getPageSort());
 
         Page<Diver> page = diverRepository.findAll(new DiverSpecification(searchDto), pageRequest);
         pageDto.setPage(pageDto.getPageNumber(), pageDto.getPageSize(), page.getTotalElements(), page.getTotalPages());
 
-        return DiverResponseDto.DiversPage.builder()
+        return DiverResponseDto.DiverList.builder()
                 .content(page.getContent().stream().map(diverResponseMapper::toDiversDto).collect(Collectors.toList()))
                 .page(pageDto)
                 .search(searchDto)

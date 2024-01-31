@@ -27,7 +27,10 @@ public class DiverSpecification implements Specification<Diver> {
         List<Predicate> predicates = new ArrayList<>();
 
         if (StringUtils.isNotEmpty(searchDto.getName())) {
-            predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("familyName"), searchDto.getName()), criteriaBuilder.like(root.get("givenName"), searchDto.getName())));
+            predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("familyName"), "%" + searchDto.getName() + "%"),
+                    criteriaBuilder.like(root.get("givenName"), "%" + searchDto.getName() + "%")
+                    )
+            );
         }
         if (StringUtils.isNotEmpty(searchDto.getGender())) {
             predicates.add(criteriaBuilder.equal(root.get("gender"), Gender.valueOf(searchDto.getGender())));

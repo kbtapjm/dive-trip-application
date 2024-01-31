@@ -1,4 +1,4 @@
-package io.divetrip.api.v1;
+package io.divetrip.controller;
 
 import io.divetrip.dto.PageDto;
 import io.divetrip.dto.request.DiverRequestDto;

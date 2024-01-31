@@ -2,7 +2,7 @@ package io.divetrip.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.divetrip.domain.entity.enumeration.Gender;
-import io.divetrip.dto.AddressDto;
+import io.divetrip.domain.dto.AddressDto;
 import io.divetrip.dto.SortDto;
 import io.divetrip.validator.valid.EnumValue;
 import jakarta.validation.constraints.AssertTrue;

@@ -1,7 +1,7 @@
 package io.divetrip.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.divetrip.dto.AddressDto;
+import io.divetrip.domain.dto.AddressDto;
 import io.divetrip.dto.PageDto;
 import io.divetrip.dto.request.DiverRequestDto;
 import lombok.AccessLevel;
@@ -172,7 +172,7 @@ public class DiverResponseDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
-    public static class DiversPage {
+    public static class DiverList {
 
         /* 컨텐트 */
         private List<Divers> content = List.of();
