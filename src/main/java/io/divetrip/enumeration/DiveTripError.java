@@ -18,7 +18,9 @@ public enum DiveTripError {
     EMAIL_DUPLICATED("E101", "valid.email.already.exists", 400),
     DIVER_NOT_FOUND("E102", "valid.diver.not.found", 404),
     DIVER_PASSWORD_NOT_MATCH("E103", "valid.diver.password.notMatch", 400),
-    DIVER_PASSWORD_CAN_NOT_SAME("E104", "valid.diver.password.notSame", 400)
+    DIVER_PASSWORD_CAN_NOT_SAME("E104", "valid.diver.password.notSame", 400),
+    VESSEL_NOT_FOUND("E201", "valid.vessel.not.found", 404),
+    VESSEL_NAME_DUPLICATED("E202", "valid.vessel-name.already.exists", 400),
     ;
 
     private final String code;
