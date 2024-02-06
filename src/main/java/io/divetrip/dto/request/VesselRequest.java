@@ -1,7 +1,7 @@
 package io.divetrip.dto.request;
 
 import io.divetrip.domain.entity.enumeration.VesselStatus;
-import io.divetrip.dto.SortDto;
+import io.divetrip.dto.SearchDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -170,7 +170,7 @@ public class VesselRequest {
     @SuperBuilder
     @AllArgsConstructor
     @ToString(callSuper = true)
-    public static class SearchVessel extends SortDto {
+    public static class SearchVessel extends SearchDto {
         /* 선박 명 */
         private String vesselName;
 

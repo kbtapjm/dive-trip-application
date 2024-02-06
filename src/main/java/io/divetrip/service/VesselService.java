@@ -48,14 +48,6 @@ public class VesselService {
                 .used(searchDto.getUsed())
                 .build();
 
-        log.debug("===> pageRequest: {}", pageRequest.getSort());
-        log.debug("===> pageRequest: {}", pageRequest.getSort().toString());
-
-        pageRequest.getSort().forEach(f -> {
-            log.debug("===> getDirection: {}", f.getDirection());
-            log.debug("===> getProperty: {}", f.getProperty());
-        });
-
         Page<VesselQueryResponse> page = vesselRepository.findAllBy(pageRequest, vesselQueryRequest);
         pageDto.setPage(pageDto.getPageNumber(), pageDto.getPageSize(), page.getTotalElements(), page.getTotalPages());
 
@@ -97,6 +89,7 @@ public class VesselService {
         );
     }
 
+    @Transactional
     public void updateVesselUsed(final UUID vesselId, final VesselRequest.changeVesselUsed dto) {
         this.getVesselByVesselId(vesselId).changeUsed(dto.getUsed());
     }

@@ -21,7 +21,6 @@ public class VesselResponse {
     @AllArgsConstructor
     @Builder
     public static class Vessels {
-
         /* 선박 ID */
         private UUID vesselId;
 
@@ -95,7 +94,6 @@ public class VesselResponse {
         /* 수정일 */
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
         private LocalDateTime updatedAt;
-
     }
 
     @Getter
@@ -103,7 +101,6 @@ public class VesselResponse {
     @AllArgsConstructor
     @Builder
     public static class Vessel {
-
         /* 선박 ID */
         private UUID vesselId;
 
@@ -177,7 +174,6 @@ public class VesselResponse {
         /* 수정일 */
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
         private LocalDateTime updatedAt;
-
     }
 
     @Getter
@@ -194,6 +190,5 @@ public class VesselResponse {
         /* Search 정보 */
         private VesselRequest.SearchVessel search;
     }
-
 
 }
