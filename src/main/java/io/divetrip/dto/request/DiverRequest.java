@@ -1,8 +1,8 @@
 package io.divetrip.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.divetrip.domain.entity.enumeration.Gender;
 import io.divetrip.domain.dto.AddressDto;
+import io.divetrip.domain.entity.enumeration.Gender;
 import io.divetrip.dto.SearchDto;
 import io.divetrip.validator.valid.EnumValue;
 import jakarta.validation.constraints.AssertTrue;
@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 
-public class DiverRequestDto {
+public class DiverRequest {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -2,7 +2,7 @@ package io.divetrip.service.support;
 
 import io.divetrip.domain.entity.Diver;
 import io.divetrip.domain.entity.enumeration.Gender;
-import io.divetrip.dto.request.DiverRequestDto;
+import io.divetrip.dto.request.DiverRequest;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -20,7 +20,7 @@ public class DiverSpecification implements Specification<Diver> {
     @Serial
     private static final long serialVersionUID = 6251533342268711516L;
 
-    private final DiverRequestDto.SearchDiver searchDto;
+    private final DiverRequest.SearchDiver searchDto;
 
     @Override
     public Predicate toPredicate(Root<Diver> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {

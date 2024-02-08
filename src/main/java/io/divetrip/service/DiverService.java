@@ -4,11 +4,11 @@ import io.divetrip.domain.entity.Diver;
 import io.divetrip.domain.entity.enumeration.Gender;
 import io.divetrip.domain.repository.DiverRepository;
 import io.divetrip.dto.PageDto;
-import io.divetrip.dto.request.DiverRequestDto;
-import io.divetrip.dto.response.DiverResponseDto;
+import io.divetrip.dto.request.DiverRequest;
+import io.divetrip.dto.response.DiverResponse;
 import io.divetrip.enumeration.DiveTripError;
-import io.divetrip.mapper.DiverCreateRequestMapper;
-import io.divetrip.mapper.DiverResponseMapper;
+import io.divetrip.mapper.request.DiverCreateRequestMapper;
+import io.divetrip.mapper.response.DiverResponseMapper;
 import io.divetrip.service.support.DiverSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class DiverService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public String createDiver(DiverRequestDto.CreateDiver dto) {
+    public String createDiver(DiverRequest.CreateDiver dto) {
         if (diverRepository.existsByEmail(dto.getEmail())) {
             throw DiveTripError.EMAIL_DUPLICATED.exception(dto.getEmail());
         }
@@ -43,27 +43,27 @@ public class DiverService {
         return diver.getDiverId().toString();
     }
 
-    public DiverResponseDto.DiverList getDiversAll(PageDto pageDto, DiverRequestDto.SearchDiver searchDto) {
+    public DiverResponse.DiverList getDiversAll(PageDto pageDto, DiverRequest.SearchDiver searchDto) {
         PageRequest pageRequest = PageRequest.of(pageDto.getPageNumber(), pageDto.getPageSize(), searchDto.getPageSort());
 
         Page<Diver> page = diverRepository.findAll(new DiverSpecification(searchDto), pageRequest);
         pageDto.setPage(pageDto.getPageNumber(), pageDto.getPageSize(), page.getTotalElements(), page.getTotalPages());
 
-        return DiverResponseDto.DiverList.builder()
+        return DiverResponse.DiverList.builder()
                 .content(page.getContent().stream().map(diverResponseMapper::toDiversDto).collect(Collectors.toList()))
                 .page(pageDto)
                 .search(searchDto)
                 .build();
     }
 
-    public DiverResponseDto.Diver getDiver(final UUID diverId) {
+    public DiverResponse.Diver getDiver(final UUID diverId) {
         Diver diver = this.getDiverByDiverId(diverId);
 
         return diverResponseMapper.toDiverDto(diver);
     }
 
     @Transactional
-    public void updateDiver(final UUID diverId, DiverRequestDto.UpdateDiver dto) {
+    public void updateDiver(final UUID diverId, DiverRequest.UpdateDiver dto) {
         Diver diver = this.getDiverByDiverId(diverId);
 
         diver.update(
@@ -90,7 +90,7 @@ public class DiverService {
     }
 
     @Transactional
-    public void updateDiverPassword(final UUID diverId, DiverRequestDto.UpdatePassword dto) {
+    public void updateDiverPassword(final UUID diverId, DiverRequest.UpdatePassword dto) {
         Diver diver = this.getDiverByDiverId(diverId);
 
         if (!passwordEncoder.matches(dto.getOldPassword(), diver.getPassword())) {

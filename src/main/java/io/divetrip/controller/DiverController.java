@@ -1,7 +1,7 @@
 package io.divetrip.controller;
 
 import io.divetrip.dto.PageDto;
-import io.divetrip.dto.request.DiverRequestDto;
+import io.divetrip.dto.request.DiverRequest;
 import io.divetrip.service.DiverService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +25,11 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1")
-public class DiverApiController {
-
+public class DiverController {
     private final DiverService diverService;
 
     @PostMapping(value = "/divers", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createDiver(@Valid @RequestBody DiverRequestDto.CreateDiver dto) {
+    public ResponseEntity<?> createDiver(@Valid @RequestBody DiverRequest.CreateDiver dto) {
         String diverId = diverService.createDiver(dto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -55,7 +54,7 @@ public class DiverApiController {
                 .pageSize(pageSize)
                 .build();
 
-        DiverRequestDto.SearchDiver searchDto = DiverRequestDto.SearchDiver.builder()
+        DiverRequest.SearchDiver searchDto = DiverRequest.SearchDiver.builder()
                 .sort(sort)
                 .orderBy(orderBy)
                 .name(name)
@@ -71,7 +70,7 @@ public class DiverApiController {
     }
 
     @PutMapping(value = "/divers/{diverId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateDiver(@PathVariable UUID diverId, @Valid @RequestBody DiverRequestDto.UpdateDiver dto) {
+    public ResponseEntity<?> updateDiver(@PathVariable UUID diverId, @Valid @RequestBody DiverRequest.UpdateDiver dto) {
         diverService.updateDiver(diverId, dto);
 
         return ResponseEntity.ok().build();
@@ -85,10 +84,9 @@ public class DiverApiController {
     }
 
     @PatchMapping(value = "/divers/{diverId}/password", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateDiverPassword(@PathVariable UUID diverId, @Valid @RequestBody DiverRequestDto.UpdatePassword dto) {
+    public ResponseEntity<?> updateDiverPassword(@PathVariable UUID diverId, @Valid @RequestBody DiverRequest.UpdatePassword dto) {
         diverService.updateDiverPassword(diverId, dto);
 
         return ResponseEntity.ok().build();
     }
-
 }

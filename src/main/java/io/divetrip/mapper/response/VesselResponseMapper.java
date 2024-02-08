@@ -1,4 +1,4 @@
-package io.divetrip.mapper;
+package io.divetrip.mapper.response;
 
 import io.divetrip.domain.entity.Vessel;
 import io.divetrip.domain.repository.dto.response.VesselQueryResponse;

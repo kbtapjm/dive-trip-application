@@ -3,7 +3,7 @@ package io.divetrip.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.divetrip.domain.dto.AddressDto;
 import io.divetrip.dto.PageDto;
-import io.divetrip.dto.request.DiverRequestDto;
+import io.divetrip.dto.request.DiverRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class DiverResponseDto {
+public class DiverResponse {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -181,8 +181,7 @@ public class DiverResponseDto {
         private PageDto page;
 
         /* Search 정보 */
-        private DiverRequestDto.SearchDiver search;
+        private DiverRequest.SearchDiver search;
 
     }
-
 }
