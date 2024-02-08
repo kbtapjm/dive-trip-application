@@ -19,8 +19,12 @@ public enum DiveTripError {
     DIVER_NOT_FOUND("E102", "valid.diver.not.found", 404),
     DIVER_PASSWORD_NOT_MATCH("E103", "valid.diver.password.notMatch", 400),
     DIVER_PASSWORD_CAN_NOT_SAME("E104", "valid.diver.password.notSame", 400),
+
     VESSEL_NOT_FOUND("E201", "valid.vessel.not.found", 404),
     VESSEL_NAME_DUPLICATED("E202", "valid.vessel-name.already.exists", 400),
+    VESSEL_CAN_NOT_DELETED("E203", "valid.vessel.can.not.deleted", 400),
+    VESSEL_CABIN_NOT_FOUND("E204", "valid.vessel-cabin.not.found", 404),
+    VESSEL_CABIN_NAME_DUPLICATED("E205", "valid.vessel-cabin-name.already.exists", 400)
     ;
 
     private final String code;

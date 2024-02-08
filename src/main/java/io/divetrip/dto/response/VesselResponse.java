@@ -180,7 +180,7 @@ public class VesselResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
-    public static class DiverResult {
+    public static class VesselResult {
         /* 컨텐트 */
         private List<VesselResponse.Vessels> content = List.of();
 

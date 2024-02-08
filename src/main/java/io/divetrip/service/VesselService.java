@@ -40,7 +40,7 @@ public class VesselService {
         return vessel.getVesselId().toString();
     }
 
-    public VesselResponse.DiverResult getVessels(PageDto pageDto, VesselRequest.SearchVessel searchDto) {
+    public VesselResponse.VesselResult getVessels(PageDto pageDto, VesselRequest.SearchVessel searchDto) {
         PageRequest pageRequest = PageRequest.of(pageDto.getPageNumber(), pageDto.getPageSize(), searchDto.getPageSort());
         VesselQueryRequest vesselQueryRequest = VesselQueryRequest.builder()
                 .vesselName(searchDto.getVesselName())
@@ -51,7 +51,7 @@ public class VesselService {
         Page<VesselQueryResponse> page = vesselRepository.findAllBy(pageRequest, vesselQueryRequest);
         pageDto.setPage(pageDto.getPageNumber(), pageDto.getPageSize(), page.getTotalElements(), page.getTotalPages());
 
-        return VesselResponse.DiverResult.builder()
+        return VesselResponse.VesselResult.builder()
                 .content(page.getContent().stream()
                         .map(vesselResponseMapper::toVesselsDto)
                         .collect(Collectors.toList())
@@ -96,11 +96,14 @@ public class VesselService {
 
     public void deleteVessel(final UUID vesselId) {
         Vessel vessel = this.getVesselByVesselId(vesselId);
+        if (!vessel.getVesselCabins().isEmpty()) {
+            throw DiveTripError.VESSEL_CAN_NOT_DELETED.exception();
+        }
 
         vesselRepository.delete(vessel);
     }
 
-    private Vessel getVesselByVesselId(final UUID vesselId) {
+    public Vessel getVesselByVesselId(final UUID vesselId) {
         return vesselRepository.findById(vesselId)
                 .orElseThrow(() ->  DiveTripError.VESSEL_NOT_FOUND.exception(vesselId.toString()));
     }

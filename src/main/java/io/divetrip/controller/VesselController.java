@@ -2,7 +2,9 @@ package io.divetrip.controller;
 
 import io.divetrip.domain.entity.enumeration.VesselStatus;
 import io.divetrip.dto.PageDto;
+import io.divetrip.dto.request.VesselCabinRequest;
 import io.divetrip.dto.request.VesselRequest;
+import io.divetrip.service.VesselCabinService;
 import io.divetrip.service.VesselService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +30,9 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1")
-public class VesselRestController {
-
+public class VesselController {
     private final VesselService vesselService;
+    private final VesselCabinService vesselCabinService;
 
     @PostMapping(value = "/vessels", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createVessel(@Valid @RequestBody VesselRequest.CreateVessel dto) {
@@ -108,4 +110,50 @@ public class VesselRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping(value = "/vessels/{vesselId}/cabins", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createVesselCabin(@PathVariable UUID vesselId, @Valid @RequestBody VesselCabinRequest.CreateVesselCabin dto) {
+        if (log.isDebugEnabled()) {
+            log.debug("VesselCabinRequest.CreateVesselCabin: {}", dto.toString());
+        }
+
+        String vesselCabinId = vesselCabinService.createVesselCabin(vesselId, dto);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{vesselCabinId}")
+                .buildAndExpand(vesselCabinId)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping(value = "/vessels/{vesselId}/cabins", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getVesselCabinsByVesselId(@PathVariable UUID vesselId) {
+        return ResponseEntity.ok(vesselCabinService.getVesselCabinsByVesselId(vesselId));
+    }
+
+    @GetMapping(value = "/vessels/{vesselId}/cabins/{vesselCabinId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getVesselCabin(@PathVariable UUID vesselId, @PathVariable UUID vesselCabinId) {
+        return ResponseEntity.ok(vesselCabinService.getVesselCabin(vesselId, vesselCabinId));
+    }
+
+    @PutMapping(value = "/vessels/{vesselId}/cabins/{vesselCabinId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createVesselCabin(
+            @PathVariable UUID vesselId,
+            @PathVariable UUID vesselCabinId,
+            @Valid @RequestBody VesselCabinRequest.UpdateVesselCabin dto) {
+        if (log.isDebugEnabled()) {
+            log.debug("VesselCabinRequest.UpdateVesselCabin: {}", dto.toString());
+        }
+
+        vesselCabinService.updateVesselCabin(vesselId, vesselCabinId, dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/vessels/{vesselId}/cabins/{vesselCabinId}")
+    public ResponseEntity<?> deleteVessel(@PathVariable UUID vesselId, @PathVariable UUID vesselCabinId) {
+        vesselCabinService.deleteVesselCabin(vesselId, vesselCabinId);
+
+        return ResponseEntity.noContent().build();
+    }
 }
