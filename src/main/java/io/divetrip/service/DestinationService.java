@@ -70,7 +70,7 @@ public class DestinationService {
         destinationRepository.delete(this.getDestinationByDestinationId(destinationId));
     }
 
-    private Destination getDestinationByDestinationId(final UUID destinationId) {
+    public Destination getDestinationByDestinationId(final UUID destinationId) {
         return destinationRepository.findById(destinationId)
                 .orElseThrow(() ->  DiveTripError.DESTINATION_NOT_FOUND.exception(destinationId.toString()));
     }

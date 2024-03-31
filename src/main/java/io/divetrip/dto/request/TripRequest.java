@@ -89,7 +89,7 @@ public class TripRequest {
 
         /* 여행 여정 */
         @NotBlank
-        @Size(min = 1, max = 50)
+        @Size(min = 1, max = 500)
         private String itinerary;
     }
 
