@@ -113,5 +113,4 @@ public class TripRequest {
         private String note;
     }
 
-
 }

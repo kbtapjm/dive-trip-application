@@ -10,8 +10,10 @@ import io.divetrip.dto.request.TripRequest;
 import io.divetrip.mapper.request.TripCreateRequestMapper;
 import io.divetrip.mapper.request.TripLodgingRequestMapper;
 import io.divetrip.mapper.request.TripScheduleRequestMapper;
+import io.divetrip.mapper.request.TripStatusHistoryRequestMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class TripService {
     private final TripCreateRequestMapper tripCreateRequestMapper;
     private final TripScheduleRequestMapper tripScheduleRequestMapper;
     private final TripLodgingRequestMapper tripLodgingRequestMapper;
+    private final TripStatusHistoryRequestMapper tripStatusHistoryRequestMapper;
     private final DestinationService destinationService;
     private final VesselService vesselService;
 
@@ -56,6 +59,9 @@ public class TripService {
                 })
                 .collect(Collectors.toList());
         trip.addAllLodgings(tripLodgings);
+
+        /* create trip status history */
+        trip.getStatusHistorys().add(tripStatusHistoryRequestMapper.toEntity(dto.getTripStatus(), StringUtils.EMPTY, trip));
 
         return trip.getTripId().toString();
     }
