@@ -92,7 +92,7 @@ public class TripRequest {
 
         /* 여행 여정 */
         @NotBlank
-        @Size(min = 1, max = 500)
+        @Size(min = 1, max = 2000)
         private String itinerary;
     }
 
@@ -124,6 +124,9 @@ public class TripRequest {
     public static class SearchTrip extends SearchDto {
         /* 여행 상태 */
         private TripStatus tripStatus;
+
+        /* 지역 */
+        private String area;
     }
 
 }

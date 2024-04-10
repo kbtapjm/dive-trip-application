@@ -69,7 +69,7 @@ public class TripService {
         trip.addAllLodgings(tripLodgings);
 
         /* create trip status history */
-        trip.getStatusHistorys().add(tripStatusHistoryRequestMapper.toEntity(dto.getTripStatus(), StringUtils.EMPTY, trip));
+        trip.addAllStatusHistorys(List.of(tripStatusHistoryRequestMapper.toEntity(dto.getTripStatus(), StringUtils.EMPTY, trip)));
 
         return trip.getTripId().toString();
     }
@@ -79,6 +79,7 @@ public class TripService {
 
         TripQueryRequest tripQueryRequest = TripQueryRequest.builder()
                 .tripStatus(searchDto.getTripStatus())
+                .area(searchDto.getArea())
                 .build();
 
         Page<TripQueryResponse> page = tripRepository.findAllBy(pageRequest, tripQueryRequest);

@@ -49,7 +49,8 @@ public class TripController {
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
             @RequestParam(value = "sort", required = false, defaultValue = "createdAt") String sort,
             @RequestParam(value = "orderBy", required = false, defaultValue = "desc") String orderBy,
-            @RequestParam(value = "tripStatus", required = false, defaultValue = "") TripStatus tripStatus
+            @RequestParam(value = "tripStatus", required = false, defaultValue = "") TripStatus tripStatus,
+            @RequestParam(value = "area", required = false, defaultValue = "") String area
     ) {
         PageDto pageDto = PageDto.builder()
                 .pageNumber(pageNumber)
@@ -60,6 +61,7 @@ public class TripController {
                 .sort(sort)
                 .orderBy(orderBy)
                 .tripStatus(tripStatus)
+                .area(area)
                 .build();
 
         return ResponseEntity.ok(tripService.getTrips(pageDto, searchDto));

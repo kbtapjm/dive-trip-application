@@ -2,6 +2,7 @@ package io.divetrip.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.divetrip.domain.entity.enumeration.TripStatus;
+import io.divetrip.domain.entity.enumeration.VesselStatus;
 import io.divetrip.dto.PageDto;
 import io.divetrip.dto.request.TripRequest;
 import lombok.AccessLevel;
@@ -46,6 +47,18 @@ public class TripResponse {
 
         /* 다이빙 횟수 */
         private Integer totalDives;
+
+        /* 국가 명 */
+        private String countryName;
+
+        /* 지역 */
+        private String area;
+
+        /* 선박 명 */
+        private String vesselName;
+
+        /* 선박 상태 */
+        private VesselStatus vesselStatus;
 
         /* 등록자 */
         private String createdBy;
