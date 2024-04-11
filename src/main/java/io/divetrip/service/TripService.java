@@ -28,6 +28,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -107,6 +108,7 @@ public class TripService {
 
         List<TripResponse.TripSchedule> schedules = trip.getSchedules().stream()
                 .map(tripScheduleResponseMapper::toTripScheduleDto)
+                .sorted(Comparator.comparing(TripResponse.TripSchedule::getTripDate))
                 .collect(Collectors.toList());
 
         List<TripResponse.TripLodging> lodgings = trip.getLodgings().stream()
@@ -161,6 +163,20 @@ public class TripService {
                 destinationService.getDestinationByDestinationId(dto.getDestinationId()),
                 vesselService.getVesselByVesselId(dto.getVesselId())
         );
+    }
+
+    @Transactional
+    public void deleteTrip(final UUID tripId) {
+        Trip trip = this.getTripByTripId(tripId);
+
+        if (!trip.getSchedules().isEmpty()) {
+            throw DiveTripError.TRIP_CAN_NOT_DELETED.exception();
+        }
+        if (!trip.getLodgings().isEmpty()) {
+            throw DiveTripError.TRIP_CAN_NOT_DELETED.exception();
+        }
+
+        tripRepository.delete(trip);
     }
 
     private Trip getTripByTripId(final UUID tripId) {

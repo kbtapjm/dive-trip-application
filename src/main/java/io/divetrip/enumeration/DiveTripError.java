@@ -34,7 +34,8 @@ public enum DiveTripError {
     DESTINATION_NOT_FOUND("E401", "valid.destination.not.found", 404),
 
     // trip
-    TRIP_NOT_FOUND("E501", "valid.trip.not.found", 404)
+    TRIP_NOT_FOUND("E501", "valid.trip.not.found", 404),
+    TRIP_CAN_NOT_DELETED("E502", "valid.trip.can.not.deleted", 400)
     ;
 
     private final String code;
