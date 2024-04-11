@@ -120,6 +120,49 @@ public class TripService {
         return tripResponseMapper.toTripDto(trip, schedules, lodgings, statusHistorys);
     }
 
+    @Transactional
+    public void updateTrip(final UUID tripId, final TripRequest.UpdateTrip dto) {
+        Trip trip = this.getTripByTripId(tripId);
+
+        /* create trip schedules */
+        trip.clearSchedules();
+
+        List<TripSchedule> tripSchedules = dto.getSchedules().stream()
+                .map(m -> {
+                    return tripScheduleRequestMapper.toEntity(m, trip);
+                })
+                .collect(Collectors.toList());
+        trip.addAllSchedules(tripSchedules);
+
+        /* create trip lodgings */
+        trip.clearLodgings();
+
+        List<TripLodging> tripLodgings = dto.getLodgings().stream()
+                .map(m -> {
+                    return tripLodgingRequestMapper.toEntity(m, trip);
+                })
+                .collect(Collectors.toList());
+        trip.addAllLodgings(tripLodgings);
+
+        /* create trip status history */
+        if (!trip.getTripStatus().equals(dto.getTripStatus())) {
+            trip.addStatusHistory(tripStatusHistoryRequestMapper.toEntity(dto.getTripStatus(), StringUtils.EMPTY, trip));
+        }
+
+        /* update trip */
+        trip.update(
+                dto.getTripStatus(),
+                dto.getDepartureTime(),
+                dto.getReturnTime(),
+                dto.getStartPort(),
+                dto.getEndPort(),
+                dto.getDurations(),
+                dto.getTotalDives(),
+                destinationService.getDestinationByDestinationId(dto.getDestinationId()),
+                vesselService.getVesselByVesselId(dto.getVesselId())
+        );
+    }
+
     private Trip getTripByTripId(final UUID tripId) {
         return tripRepository.findById(tripId)
                 .orElseThrow(() ->  DiveTripError.TRIP_NOT_FOUND.exception(tripId.toString()));

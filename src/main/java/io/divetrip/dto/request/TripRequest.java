@@ -72,11 +72,72 @@ public class TripRequest {
         /* 여행 일정 */
         @Valid
         @NotNull
+        @Size(min = 1)
         private List<CreateTripSchedule> schedules = new ArrayList<>();
 
         /* 여행 숙소 */
         @Valid
         @NotNull
+        @Size(min = 1)
+        private List<CreateTripLodging> lodgings = new ArrayList<>();
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    public static class UpdateTrip {
+        /* 여행 상태 */
+        @NotNull
+        private TripStatus tripStatus;
+
+        /* 출발 시간 */
+        @NotNull
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
+        private LocalDateTime departureTime;
+
+        /* 반환 시간 */
+        @NotNull
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
+        private LocalDateTime returnTime;
+
+        /* 시작 포트 */
+        @NotBlank
+        @Size(min = 1, max = 20)
+        private String startPort;
+
+        /* 종료 포트 */
+        @NotBlank
+        @Size(min = 1, max = 20)
+        private String endPort;
+
+        /* 기간 */
+        @NotBlank
+        @Size(min = 1, max = 20)
+        private String durations;
+
+        /* 다이빙 횟수 */
+        @NotNull
+        private Integer totalDives;
+
+        /* 목적지 ID */
+        @NotNull
+        private UUID destinationId;
+
+        /* 선박 ID */
+        @NotNull
+        private UUID vesselId;
+
+        /* 여행 일정 */
+        @Valid
+        @NotNull
+        @Size(min = 1)
+        private List<CreateTripSchedule> schedules = new ArrayList<>();
+
+        /* 여행 숙소 */
+        @Valid
+        @NotNull
+        @Size(min = 1)
         private List<CreateTripLodging> lodgings = new ArrayList<>();
     }
 

@@ -14,6 +14,8 @@ public interface TripResponseMapper {
 
     TripResponse.Trips toTripsDto(final TripQueryResponse tripQueryResponse);
 
+    @Mapping(source = "trip.destination.destinationId", target = "destinationId")
+    @Mapping(source = "trip.vessel.vesselId", target = "vesselId")
     @Mapping(source = "schedules", target = "schedules")
     @Mapping(source = "lodgings", target = "lodgings")
     @Mapping(source = "statusHistorys", target = "statusHistorys")

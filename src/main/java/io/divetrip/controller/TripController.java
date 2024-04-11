@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,6 +73,17 @@ public class TripController {
     @GetMapping(value = "/trips/{tripId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getTrip(@PathVariable UUID tripId) {
         return ResponseEntity.ok(tripService.getTrip(tripId));
+    }
+
+    @PutMapping(value = "/trips/{tripId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateTrip(@PathVariable UUID tripId, @Valid @RequestBody TripRequest.UpdateTrip dto) {
+        if (log.isDebugEnabled()) {
+            log.debug("TripRequest.UpdateTrip dto: {}", dto.toString());
+        }
+
+        tripService.updateTrip(tripId, dto);
+
+        return ResponseEntity.ok().build();
     }
 
 }

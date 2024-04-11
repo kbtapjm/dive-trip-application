@@ -119,6 +119,12 @@ public class TripResponse {
         /* 다이빙 횟수 */
         private Integer totalDives;
 
+        /* 목적지 ID */
+        private UUID destinationId;
+
+        /* 선박 ID */
+        private UUID vesselId;
+
         /* 등록자 */
         private String createdBy;
 
