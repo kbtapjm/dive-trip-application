@@ -31,7 +31,10 @@ public enum DiveTripError {
     COUNTRY_NOT_FOUND("E301", "valid.country.not.found", 404),
 
     // destination
-    DESTINATION_NOT_FOUND("E401", "valid.destination.not.found", 404)
+    DESTINATION_NOT_FOUND("E401", "valid.destination.not.found", 404),
+
+    // trip
+    TRIP_NOT_FOUND("E501", "valid.trip.not.found", 404)
     ;
 
     private final String code;
