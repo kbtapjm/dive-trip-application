@@ -103,7 +103,7 @@ public class DiverService {
         diver.changePassword(passwordEncoder.encode(dto.getNewPassword()));
     }
 
-    private Diver getDiverByDiverId(final UUID diverId) {
+    public Diver getDiverByDiverId(final UUID diverId) {
         return diverRepository.findById(diverId)
                 .orElseThrow(() ->  DiveTripError.DIVER_NOT_FOUND.exception(diverId.toString()));
     }
