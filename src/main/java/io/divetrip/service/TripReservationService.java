@@ -9,6 +9,7 @@ import io.divetrip.domain.repository.dto.response.TripReservationQueryResponse;
 import io.divetrip.dto.PageDto;
 import io.divetrip.dto.request.TripReservationRequest;
 import io.divetrip.dto.response.TripReservationResponse;
+import io.divetrip.enumeration.DiveTripError;
 import io.divetrip.mapper.request.TripReservationRequestMapper;
 import io.divetrip.mapper.request.TripReservationStatusHistoryRequestMapper;
 import io.divetrip.mapper.response.TripReservationResponseMapper;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -55,19 +57,51 @@ public class TripReservationService {
         PageRequest pageRequest = PageRequest.of(pageDto.getPageNumber(), pageDto.getPageSize(), searchDto.getPageSort());
 
         TripReservationQueryRequest tripReservationQueryRequest = TripReservationQueryRequest.builder()
-                .reservationStatus(searchDto.getReservationStatus())
-                .build();
+            .reservationStatus(searchDto.getReservationStatus())
+            .build();
 
         Page<TripReservationQueryResponse> page = tripReservationRepository.findAllBy(pageRequest, tripReservationQueryRequest);
         pageDto.setPage(page.getTotalElements(), page.getTotalPages());
 
         return TripReservationResponse.TripReservationResult.builder()
-                .content(page.getContent().stream().map(tripReservationResponseMapper::toTripReservationsDto).collect(Collectors.toList()))
-                .page(pageDto)
-                .search(searchDto)
-                .build();
+            .content(page.getContent().stream().map(tripReservationResponseMapper::toTripReservationsDto).collect(Collectors.toList()))
+            .page(pageDto)
+            .search(searchDto)
+            .build();
     }
 
+    public TripReservationResponse.TripReservation getTripReservation(final UUID tripReservationId) {
+        TripReservation tripReservation = this.getTripReservationById(tripReservationId);
 
+        return tripReservationResponseMapper.toTripReservationDto(tripReservation);
+    }
+
+    @Transactional
+    public void updateTripReservation(final UUID tripReservationId, final TripReservationRequest.updateTripReservation dto) {
+        TripReservation tripReservation = this.getTripReservationById(tripReservationId);
+
+        tripReservation.update(
+            dto.getReservationStatus(),
+            dto.getPaid(),
+            dto.getDepartureFlightNumbers(),
+            dto.getDepartureFlightDate(),
+            dto.getArrivalFlightNumbers(),
+            dto.getArrivalFlightDate(),
+            dto.getLastDiveDate(),
+            dto.getAgreeTerms(),
+            dto.getNote()
+        );
+    }
+
+    public void deleteTripReservation(final UUID tripReservationId) {
+        TripReservation tripReservation = this.getTripReservationById(tripReservationId);
+
+        tripReservationRepository.delete(tripReservation);
+    }
+
+    private TripReservation getTripReservationById(final UUID tripReservationId) {
+        return tripReservationRepository.findById(tripReservationId)
+            .orElseThrow(() ->  DiveTripError.TRIP_RESERVATION_NOT_FOUND.exception(tripReservationId.toString()));
+    }
 
 }

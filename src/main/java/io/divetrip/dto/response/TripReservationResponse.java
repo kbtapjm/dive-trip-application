@@ -74,6 +74,59 @@ public class TripReservationResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
+    public static class TripReservation {
+        /* 여행 예약 ID */
+        private UUID tripReservationId;
+
+        /* 예약 상태 */
+        private ReservationStatus reservationStatus;
+
+        /* 결제 여부 */
+        private Boolean paid;
+
+        /* 출발 편명 */
+        private String departureFlightNumbers;
+
+        /* 출발 시간 */
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
+        private LocalDateTime departureFlightDate;
+
+        /* 도착 편명 */
+        private String arrivalFlightNumbers;
+
+        /* 도착 시간 */
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
+        private LocalDateTime arrivalFlightDate;
+
+        /* 마지막 다이브 날짜 */
+        @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
+        private LocalDate lastDiveDate;
+
+        /* 약관 동의 여부 */
+        private Boolean agreeTerms;
+
+        /* 비고 */
+        private String note;
+
+        /* 등록자 */
+        private String createdBy;
+
+        /* 등록일 */
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
+        private LocalDateTime createdAt;
+
+        /* 수정자 */
+        private String updatedBy;
+
+        /* 수정일 */
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
+        private LocalDateTime updatedAt;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
     public static class TripReservationResult {
         private List<TripReservations> content = List.of();
         private PageDto page;
