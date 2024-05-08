@@ -28,36 +28,36 @@ public class VesselCabinService {
 
     @Transactional
     public String createVesselCabin(final UUID vesselId, final VesselCabinRequest.CreateVesselCabin dto) {
-        Vessel Vessel = vesselService.getVesselByVesselId(vesselId);
+        Vessel vessel = vesselService.getVesselByVesselId(vesselId);
 
-        if (vesselCabinRepository.existsByVesselAndCabinName(Vessel, dto.getCabinName())) {
+        if (vesselCabinRepository.existsByVesselAndCabinName(vessel, dto.getCabinName())) {
             throw DiveTripError.VESSEL_CABIN_NAME_DUPLICATED.exception(dto.getCabinName());
         }
 
-        VesselCabin vesselCabin = vesselCabinRepository.save(vesselCabinCreateRequestMapper.toEntity(dto, Vessel));
+        VesselCabin vesselCabin = vesselCabinRepository.save(vesselCabinCreateRequestMapper.toEntity(dto, vessel));
 
         return vesselCabin.getVesselCabinId().toString();
     }
 
     public List<VesselCabinResponse.VesselCabins> getVesselCabinsByVesselId(final UUID vesselId) {
-        Vessel Vessel = vesselService.getVesselByVesselId(vesselId);
+        Vessel vessel = vesselService.getVesselByVesselId(vesselId);
 
-        return Vessel.getVesselCabins().stream()
+        return vessel.getVesselCabins().stream()
                 .map(vesselCabinResponseMapper::toVesselCabins)
                 .collect(Collectors.toList());
     }
 
     public VesselCabinResponse.VesselCabin getVesselCabin(final UUID vesselId, final UUID vesselCabinId) {
-        Vessel Vessel = vesselService.getVesselByVesselId(vesselId);
+        Vessel vessel = vesselService.getVesselByVesselId(vesselId);
 
-        return vesselCabinResponseMapper.toVesselCabin(this.getVesselCabinByVesselAndVesselCabinId(Vessel, vesselCabinId));
+        return vesselCabinResponseMapper.toVesselCabin(this.getVesselCabinByVesselAndVesselCabinId(vessel, vesselCabinId));
     }
 
     @Transactional
     public void updateVesselCabin(final UUID vesselId, final UUID vesselCabinId, final VesselCabinRequest.UpdateVesselCabin dto) {
-        Vessel Vessel = vesselService.getVesselByVesselId(vesselId);
+        Vessel vessel = vesselService.getVesselByVesselId(vesselId);
 
-        this.getVesselCabinByVesselAndVesselCabinId(Vessel, vesselCabinId).update(
+        this.getVesselCabinByVesselAndVesselCabinId(vessel, vesselCabinId).update(
                 dto.getCabinName(),
                 dto.getDescription(),
                 dto.getSize(),
@@ -70,13 +70,13 @@ public class VesselCabinService {
     }
 
     public void deleteVesselCabin(final UUID vesselId, final UUID vesselCabinId) {
-        Vessel Vessel = vesselService.getVesselByVesselId(vesselId);
+        Vessel vessel = vesselService.getVesselByVesselId(vesselId);
 
-        vesselCabinRepository.delete(this.getVesselCabinByVesselAndVesselCabinId(Vessel, vesselCabinId));
+        vesselCabinRepository.delete(this.getVesselCabinByVesselAndVesselCabinId(vessel, vesselCabinId));
     }
 
-    private VesselCabin getVesselCabinByVesselAndVesselCabinId(Vessel Vessel, final UUID vesselCabinId) {
-        return vesselCabinRepository.findByVesselAndVesselCabinId(Vessel, vesselCabinId)
+    private VesselCabin getVesselCabinByVesselAndVesselCabinId(Vessel vessel, final UUID vesselCabinId) {
+        return vesselCabinRepository.findByVesselAndVesselCabinId(vessel, vesselCabinId)
                 .orElseThrow(() ->  DiveTripError.VESSEL_CABIN_NOT_FOUND.exception(vesselCabinId.toString()));
     }
 
