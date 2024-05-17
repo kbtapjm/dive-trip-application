@@ -39,8 +39,11 @@ public enum DiveTripError {
     TRIP_LODGING_NOT_FOUND("E503", "valid.trip-lodging.not.found", 404),
 
     // trip reservation
-    TRIP_RESERVATION_NOT_FOUND("E601", "valid.trip-reservation.not.found", 404)
+    TRIP_RESERVATION_NOT_FOUND("E601", "valid.trip-reservation.not.found", 404),
 
+    // role
+    ROLE_CODE_DUPLICATED("E701", "valid.role-code.already.exists", 400),
+    ROLE_NOT_FOUND("E702", "valid.role.not.found", 404)
     ;
 
     private final String code;
