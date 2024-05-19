@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,6 +51,24 @@ public class RoleController {
     @GetMapping(value = "/roles/{roleId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getRole(@PathVariable UUID roleId) {
         return ResponseEntity.ok(roleService.getRole(roleId));
+    }
+
+    @PutMapping(value = "/roles/{roleId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateRole(@PathVariable UUID roleId, @Valid @RequestBody RoleRequest.UpdateRole dto) {
+        if (log.isDebugEnabled()) {
+            log.debug("RoleRequest.UpdateRole: {}", dto.toString());
+        }
+
+        roleService.updateRole(roleId, dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/roles/{roleId}")
+    public ResponseEntity<?> deleteVessel(@PathVariable UUID roleId) {
+        roleService.deleteRole(roleId);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

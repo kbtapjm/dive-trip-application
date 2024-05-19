@@ -46,6 +46,21 @@ public class RoleService {
         return roleResponseMapper.toRoleDto(this.getRoleByRoleId(roleId));
     }
 
+    @Transactional
+    public void updateRole(final UUID roleId, final RoleRequest.UpdateRole dto) {
+        this.getRoleByRoleId(roleId).update(
+                dto.getRoleName(),
+                dto.getNote()
+        );
+    }
+
+    @Transactional
+    public void deleteRole(final UUID roleId) {
+        Role role = this.getRoleByRoleId(roleId);
+
+        roleRepository.delete(role);
+    }
+
     private Role getRoleByRoleId(final UUID roleId) {
         return roleRepository.findById(roleId)
                 .orElseThrow(() ->  DiveTripError.ROLE_NOT_FOUND.exception(roleId.toString()));
