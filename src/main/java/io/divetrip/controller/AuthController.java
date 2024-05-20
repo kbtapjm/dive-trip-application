@@ -4,6 +4,7 @@ import io.divetrip.dto.request.AuthRequest;
 import io.divetrip.dto.response.AuthResponse;
 import io.divetrip.security.filter.JwtFilter;
 import io.divetrip.security.filter.JwtTokenProvider;
+import io.divetrip.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -18,12 +19,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
 
+    private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -44,6 +49,18 @@ public class AuthController {
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new ResponseEntity<>(AuthResponse.Token.builder().token(jwt).build(), httpHeaders, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> signup(@Valid @RequestBody AuthRequest.Signup dto) {
+        String diverId = authService.signup(dto);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{diverId}")
+                .buildAndExpand(diverId)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
 }
