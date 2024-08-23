@@ -48,7 +48,7 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity<>(AuthResponse.Token.builder().token(jwt).build(), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(AuthResponse.Token.builder().accessToken(jwt).build(), httpHeaders, HttpStatus.OK);
     }
 
     @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)

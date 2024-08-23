@@ -13,6 +13,7 @@ public class AuthResponse {
     @AllArgsConstructor
     @Builder
     public static class Token {
-        private String token;
+        private String accessToken;
     }
+
 }
