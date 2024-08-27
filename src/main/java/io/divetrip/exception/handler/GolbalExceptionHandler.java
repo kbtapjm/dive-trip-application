@@ -77,28 +77,16 @@ public class GolbalExceptionHandler {
     }
 
     private HttpStatus getHttpStatus(int status) {
-        HttpStatus httpStatus = null;
-
-        switch (status) {
-            case 400:
-                httpStatus =  HttpStatus.BAD_REQUEST;
-                break;
-            case 401:
-                httpStatus =  HttpStatus.UNAUTHORIZED;
-                break;
-            case 403:
-                httpStatus =  HttpStatus.FORBIDDEN;
-            case 404:
-                httpStatus =  HttpStatus.NOT_FOUND;
-                break;
-            case 405:
-                httpStatus =  HttpStatus.METHOD_NOT_ALLOWED;
-                break;
-            default:
-                httpStatus =  HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return httpStatus;
+        return switch (status) {
+            case 400 -> HttpStatus.BAD_REQUEST;
+            case 401 -> HttpStatus.UNAUTHORIZED;
+            case 403 -> HttpStatus.FORBIDDEN;
+            case 404 -> HttpStatus.NOT_FOUND;
+            case 405 -> HttpStatus.METHOD_NOT_ALLOWED;
+            case 406 -> HttpStatus.NOT_ACCEPTABLE;
+            case 500 -> HttpStatus.INTERNAL_SERVER_ERROR;
+            default -> null;
+        };
     }
 
 }
