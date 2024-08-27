@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,6 +30,28 @@ public class GolbalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ExceptionResponse.of(error.getCode(), messageUtils.getMessage(error.getMessage()), error.getStatus(), ExceptionResponse.FieldError.of(e.getBindingResult())));
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    public ResponseEntity<ExceptionResponse> authenticationExceptionHandler(AuthenticationException e) {
+        log.error("authenticationExceptionHandler: {}", e.getMessage());
+
+        DiveTripError error = DiveTripError.UNAUTHORIZED;
+
+        return ResponseEntity
+                .status(this.getHttpStatus(error.getStatus()))
+                .body(ExceptionResponse.of(error.getCode(), e.getMessage(), error.getStatus()));
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<ExceptionResponse> accessDeniedExceptionHandler(AccessDeniedException e) {
+        log.error("accessDeniedExceptionHandler: {}", e);
+
+        DiveTripError error = DiveTripError.ACCESS_DENIED;
+
+        return ResponseEntity
+                .status(this.getHttpStatus(error.getStatus()))
+                .body(ExceptionResponse.of(error.getCode(), e.getMessage(), error.getStatus()));
     }
 
     @ExceptionHandler(DiveTripException.class)
@@ -55,10 +79,23 @@ public class GolbalExceptionHandler {
     private HttpStatus getHttpStatus(int status) {
         HttpStatus httpStatus = null;
 
-        if (HttpStatus.BAD_REQUEST.value() == status) {
-            httpStatus =  HttpStatus.BAD_REQUEST;
-        } else if (HttpStatus.NOT_FOUND.value() == status) {
-            httpStatus = HttpStatus.NOT_FOUND;
+        switch (status) {
+            case 400:
+                httpStatus =  HttpStatus.BAD_REQUEST;
+                break;
+            case 401:
+                httpStatus =  HttpStatus.UNAUTHORIZED;
+                break;
+            case 403:
+                httpStatus =  HttpStatus.FORBIDDEN;
+            case 404:
+                httpStatus =  HttpStatus.NOT_FOUND;
+                break;
+            case 405:
+                httpStatus =  HttpStatus.METHOD_NOT_ALLOWED;
+                break;
+            default:
+                httpStatus =  HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         return httpStatus;

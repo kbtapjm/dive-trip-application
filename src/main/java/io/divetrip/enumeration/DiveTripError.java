@@ -14,6 +14,14 @@ public enum DiveTripError {
     METHOD_NOT_ALLOWED("E004", "method.not.allowed", 405),
     INTERNAL_SERVER_ERROR("E005", "internal.server.error", 500),
 
+    // security
+    UNAUTHORIZED("E011", "자격 증명에 실패하였습니다", 401),
+    ACCESS_DENIED("E012", "알 수 없는 이유로 요청이 거절되었습니다", 403),
+    UNKNOWN_TOKEN_VALUE("E013", "알 수 없는 토큰입니다", 401),
+    INVALID_TOKEN_VALUE("E014", "잘못된 토큰입니다", 401),
+    EXPIRED_TOKEN_VALUE("E015", "만료된 토큰입니다", 403),
+    UNSUPPORTED_TOKEN_VALUE("E016", "지원하지 않는 토큰입니다", 401),
+
     // diver
     EMAIL_DUPLICATED("E101", "valid.email.already.exists", 400),
     DIVER_NOT_FOUND("E102", "valid.diver.not.found", 404),
@@ -43,8 +51,7 @@ public enum DiveTripError {
 
     // role
     ROLE_CODE_DUPLICATED("E701", "valid.role-code.already.exists", 400),
-    ROLE_NOT_FOUND("E702", "valid.role.not.found", 404)
-    ;
+    ROLE_NOT_FOUND("E702", "valid.role.not.found", 404);
 
     private final String code;
     private final String message;
