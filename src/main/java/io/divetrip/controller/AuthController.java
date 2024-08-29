@@ -3,7 +3,6 @@ package io.divetrip.controller;
 import io.divetrip.dto.request.AuthRequest;
 import io.divetrip.dto.response.AuthResponse;
 import io.divetrip.secuity.component.JwtTokenProvider;
-import io.divetrip.secuity.filter.JwtAuthenticationFilter;
 import io.divetrip.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +45,7 @@ public class AuthController {
         String jwt = jwtTokenProvider.createToken(authentication);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
         return new ResponseEntity<>(AuthResponse.Token.builder().accessToken(jwt).build(), httpHeaders, HttpStatus.OK);
     }
