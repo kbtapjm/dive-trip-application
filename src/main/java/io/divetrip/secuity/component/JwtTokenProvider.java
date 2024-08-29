@@ -15,6 +15,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,12 +34,15 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider implements InitializingBean {
 
     private static final String AUTHORITIES_KEY = "auth";
-    private final String secret = "a2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbQ==";
+    private final String secret;
     private final long tokenValidityInMilliseconds;
     private Key key;
 
-    public JwtTokenProvider() {
-        this.tokenValidityInMilliseconds = 86400 * 1000;
+    public JwtTokenProvider(
+            @Value("${props.jwt.secret}") String secret,
+            @Value("${props.jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+        this.secret = secret;
+        this.tokenValidityInMilliseconds = tokenValidityInSeconds;
     }
 
     @Override
