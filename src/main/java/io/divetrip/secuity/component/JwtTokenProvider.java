@@ -10,6 +10,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.DecodingException;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -50,17 +51,17 @@ public class JwtTokenProvider implements InitializingBean {
         try {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.error("잘못된 JWT 서명입니다.");
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException | DecodingException e ) {
+            log.error(DiveTripError.INVALID_TOKEN_VALUE.getMessage());
             throw new JwtException(DiveTripError.INVALID_TOKEN_VALUE.getMessage());
         } catch (ExpiredJwtException e) {
-            log.error("만료된 JWT 토큰입니다.");
+            log.error(DiveTripError.EXPIRED_TOKEN_VALUE.getMessage());
             throw new JwtException(DiveTripError.EXPIRED_TOKEN_VALUE.getMessage());
         } catch (UnsupportedJwtException e) {
-            log.error("지원되지 않는 JWT 토큰입니다.");
+            log.error(DiveTripError.UNSUPPORTED_TOKEN_VALUE.getMessage());
             throw new JwtException(DiveTripError.UNSUPPORTED_TOKEN_VALUE.getMessage());
         } catch (IllegalArgumentException e) {
-            log.error("JWT 토큰이 잘못되었습니다.");
+            log.error(DiveTripError.UNKNOWN_TOKEN_VALUE.getMessage());
             throw new JwtException(DiveTripError.UNKNOWN_TOKEN_VALUE.getMessage());
         }
     }
@@ -69,12 +70,9 @@ public class JwtTokenProvider implements InitializingBean {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
-        log.debug("===> authorities: {}", authorities);
 
-        // 토큰의 expire 시간을 설정
         long now = (new Date()).getTime();
         Date expiration = new Date(now + this.tokenValidityInMilliseconds);
-
         log.debug("===> expiration: {}", expiration);
 
         return Jwts.builder()
@@ -97,10 +95,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        User principal = new User(claims.getSubject(), StringUtils.EMPTY, authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(new User(claims.getSubject(), StringUtils.EMPTY, authorities), token, authorities);
     }
-
 
 }

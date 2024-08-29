@@ -29,7 +29,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             } else if (StringUtils.equals(message, DiveTripError.INVALID_TOKEN_VALUE.getMessage())) {
                 this.setResponse(response, DiveTripError.INVALID_TOKEN_VALUE);
             } else if (StringUtils.equals(message, DiveTripError.EXPIRED_TOKEN_VALUE.getMessage())) {
-                this.setResponse(response, DiveTripError.UNKNOWN_TOKEN_VALUE);
+                this.setResponse(response, DiveTripError.EXPIRED_TOKEN_VALUE);
             } else if (StringUtils.equals(message, DiveTripError.UNSUPPORTED_TOKEN_VALUE.getMessage())) {
                 this.setResponse(response, DiveTripError.UNSUPPORTED_TOKEN_VALUE);
             }

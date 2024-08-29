@@ -34,7 +34,7 @@ public class GolbalExceptionHandler {
 
     @ExceptionHandler(value = AuthenticationException.class)
     public ResponseEntity<ExceptionResponse> authenticationExceptionHandler(AuthenticationException e) {
-        log.error("authenticationExceptionHandler: {}", e.getMessage());
+        log.error("authenticationExceptionHandler: {}", e);
 
         DiveTripError error = DiveTripError.UNAUTHORIZED;
 

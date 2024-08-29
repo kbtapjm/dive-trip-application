@@ -25,6 +25,16 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
+    public static final String[] ALLOWED_REQUEST_URIS = {
+            "/h2-console/**",
+            "/favicon.ico",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/api-docs/**",
+            "/api/v1/signup",
+            "/api/v1/login"
+    };
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -44,15 +54,7 @@ public class SecurityConfig {
                         httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler)
                 )
                 .authorizeHttpRequests(authorizeRequests -> {
-                    authorizeRequests.requestMatchers(
-                            "/h2-console/**",
-                            "/favicon.ico",
-                            "/swagger-ui/**",
-                            "/swagger-resources/**",
-                            "/api-docs/**",
-                            "/api/v1/signup",
-                            "/api/v1/login"
-                    ).permitAll();
+                    authorizeRequests.requestMatchers(ALLOWED_REQUEST_URIS).permitAll();
                     authorizeRequests.anyRequest().authenticated();
                 })
                 .apply(new JwtSecurityConfig(jwtTokenProvider));

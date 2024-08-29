@@ -25,10 +25,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return diverRepository.findByEmail(username)
                 .map(this::getDiver)
-                .orElseThrow(() -> new UsernameNotFoundException("Not found username: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("user not found: %s", username)));
     }
 
     private org.springframework.security.core.userdetails.User getDiver(Diver diver) {
+        if (diver.getDiverRoles().isEmpty()) {
+            throw new RuntimeException("권한이 없어서 사이트에 접근 할 수 없습니다");
+        }
+
         List<GrantedAuthority> authorities = diver.getDiverRoles().stream()
                 .map(DiverRole::getRole)
                 .map(role -> new SimpleGrantedAuthority(role.getRoleCode()))
