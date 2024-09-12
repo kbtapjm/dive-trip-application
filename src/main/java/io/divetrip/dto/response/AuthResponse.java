@@ -14,6 +14,8 @@ public class AuthResponse {
     @Builder
     public static class Token {
         private String accessToken;
+        private String refreshToken;
+        private String tokenType;
     }
 
 }

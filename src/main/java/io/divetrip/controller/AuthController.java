@@ -6,6 +6,7 @@ import io.divetrip.secuity.component.JwtTokenProvider;
 import io.divetrip.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,7 +48,13 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
-        return new ResponseEntity<>(AuthResponse.Token.builder().accessToken(jwt).build(), httpHeaders, HttpStatus.OK);
+        AuthResponse.Token token = AuthResponse.Token.builder()
+                .accessToken(jwt)
+                .refreshToken(StringUtils.EMPTY)
+                .tokenType("Bearer")
+                .build();
+
+        return new ResponseEntity<>(token, httpHeaders, HttpStatus.OK);
     }
 
     @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)

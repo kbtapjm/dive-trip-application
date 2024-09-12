@@ -3,6 +3,7 @@ package io.divetrip.secuity.component;
 import io.divetrip.enumeration.DiveTripError;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -80,9 +81,11 @@ public class JwtTokenProvider implements InitializingBean {
         log.debug("===> expiration: {}", expiration);
 
         return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities) // 정보 저장
                 .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 , signature 에 들어갈 secret값 세팅
+                .setIssuedAt(new Date())
                 .setExpiration(expiration) // set Expire Time 해당 옵션 안넣으면 expire안함
                 .compact();
     }
