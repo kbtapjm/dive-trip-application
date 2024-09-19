@@ -21,6 +21,7 @@ import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class DiverRequest {
 
@@ -205,6 +206,14 @@ public class DiverRequest {
 
         /* 정렬 대상 컬럼 */
         private final String sortColumn;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class CreateDiverRole {
+        /* 역할 ID */
+        @NotNull
+        private UUID roleId;
     }
 
 }

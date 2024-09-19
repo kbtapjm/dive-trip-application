@@ -43,7 +43,7 @@ public class JwtTokenProvider implements InitializingBean {
             @Value("${props.jwt.secret}") String secret,
             @Value("${props.jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds;
+        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
 
     @Override
@@ -76,8 +76,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        long now = (new Date()).getTime();
-        Date expiration = new Date(now + this.tokenValidityInMilliseconds);
+        Date expiration = new Date(System.currentTimeMillis() + this.tokenValidityInMilliseconds);
         log.debug("===> expiration: {}", expiration);
 
         return Jwts.builder()

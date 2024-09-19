@@ -184,4 +184,5 @@ public class DiverResponse {
         private DiverRequest.SearchDiver search;
 
     }
+
 }

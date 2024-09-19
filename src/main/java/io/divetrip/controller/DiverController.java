@@ -91,4 +91,28 @@ public class DiverController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping(value = "/divers/{diverId}/roles", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createDiverRole(@PathVariable UUID diverId, @Valid @RequestBody DiverRequest.CreateDiverRole dto) {
+        diverService.createDiverRole(diverId, dto);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .build()
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping(value = "/divers/{diverId}/roles", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getDiverRoles(@PathVariable UUID diverId) {
+        return ResponseEntity.ok(diverService.getDiverRoles(diverId));
+    }
+
+    @DeleteMapping(value = "/divers/{diverId}/roles/{roleId}")
+    public ResponseEntity<?> deleteDiverRole(@PathVariable UUID diverId, @PathVariable UUID roleId) {
+        diverService.deleteDiverRole(diverId, roleId);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

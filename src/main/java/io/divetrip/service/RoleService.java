@@ -61,11 +61,9 @@ public class RoleService {
         roleRepository.delete(role);
     }
 
-    private Role getRoleByRoleId(final UUID roleId) {
+    public Role getRoleByRoleId(final UUID roleId) {
         return roleRepository.findById(roleId)
                 .orElseThrow(() ->  DiveTripError.ROLE_NOT_FOUND.exception(roleId.toString()));
     }
-
-
 
 }
