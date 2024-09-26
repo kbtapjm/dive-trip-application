@@ -13,10 +13,12 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.DecodingException;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +26,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,14 +39,17 @@ public class JwtTokenProvider implements InitializingBean {
 
     private static final String AUTHORITIES_KEY = "auth";
     private final String secret;
-    private final long tokenValidityInMilliseconds;
+    private final long accessExpirationTime;
+    private final long refreshExpirationTime;
     private Key key;
 
     public JwtTokenProvider(
             @Value("${props.jwt.secret}") String secret,
-            @Value("${props.jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+            @Value("${props.jwt.token.access-expiration-time}") long accessExpirationTime,
+            @Value("${props.jwt.token.refresh-expiration-time}") long refreshExpirationTime) {
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+        this.accessExpirationTime = accessExpirationTime;
+        this.refreshExpirationTime = refreshExpirationTime;
     }
 
     @Override
@@ -71,21 +77,33 @@ public class JwtTokenProvider implements InitializingBean {
         }
     }
 
-    public String createToken(Authentication authentication) {
+    public String createAccessToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        Date expiration = new Date(System.currentTimeMillis() + this.tokenValidityInMilliseconds);
-        log.debug("===> expiration: {}", expiration);
+        return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 , signature 에 들어갈 secret값 세팅
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + this.accessExpirationTime)) // set Expire Time 해당 옵션 안넣으면 expire안함
+                .compact();
+    }
+
+    public String createRefreshToken(Authentication authentication) {
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities) // 정보 저장
-                .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 , signature 에 들어갈 secret값 세팅
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .setIssuedAt(new Date())
-                .setExpiration(expiration) // set Expire Time 해당 옵션 안넣으면 expire안함
+                .setExpiration(new Date(System.currentTimeMillis() + this.refreshExpirationTime))
                 .compact();
     }
 
@@ -102,6 +120,23 @@ public class JwtTokenProvider implements InitializingBean {
                 .collect(Collectors.toList());
 
         return new UsernamePasswordAuthenticationToken(new User(claims.getSubject(), StringUtils.EMPTY, authorities), token, authorities);
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.isEmpty(bearerToken) || !bearerToken.startsWith("Bearer ")) {
+            return StringUtils.EMPTY;
+        }
+
+        return bearerToken.substring(7);
+    }
+
+    public Claims extractJwtClaims(String token) {
+        SignatureAlgorithm signWith = SignatureAlgorithm.HS512;
+        SecretKeySpec secretKeySpec = new SecretKeySpec(Decoders.BASE64.decode(this.secret), signWith.getJcaName());
+
+        return Jwts.parserBuilder().setSigningKey(secretKeySpec).build()
+                .parseClaimsJws(token).getBody();
     }
 
 }

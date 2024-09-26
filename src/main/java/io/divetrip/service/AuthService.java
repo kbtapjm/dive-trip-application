@@ -2,7 +2,6 @@ package io.divetrip.service;
 
 import io.divetrip.domain.entity.Diver;
 import io.divetrip.domain.repository.DiverRepository;
-import io.divetrip.domain.repository.RoleRepository;
 import io.divetrip.dto.request.AuthRequest;
 import io.divetrip.enumeration.DiveTripError;
 import io.divetrip.mapper.request.AuthRequestMapper;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
     private final DiverRepository diverRepository;
-    private final RoleRepository roleRepository;
     private final AuthRequestMapper authRequestMapper;
     private final PasswordEncoder passwordEncoder;
 

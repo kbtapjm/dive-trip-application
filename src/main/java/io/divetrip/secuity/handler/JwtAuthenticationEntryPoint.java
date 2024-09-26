@@ -11,6 +11,9 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
+/**
+ * 유저 정보 없이 접근한 경우 : SC_UNAUTHORIZED (401) 응답
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {

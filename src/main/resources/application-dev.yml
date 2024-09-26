@@ -19,6 +19,10 @@ spring:
         format_sql: true
         use_sql_comments: true
         highlight_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 spring-doc:
   swagger-ui:
@@ -48,5 +52,7 @@ props:
     header: Authorization
     #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
     secret: a2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbQ==
-    token-validity-in-seconds: 86400 # ttl (초): 60 * 60 * 24
+    token:
+      access-expiration-time: 1800000 #ttl(초): 1000 * 60 * 30 (30분)
+      refresh-expiration-time: 86400000 #ttl(초): 1000 * 60 * 60 * 24 * 1 (일)
 

@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -26,22 +25,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
-        String bearerToken = this.getBearerToken(httpServletRequest);
+        String bearerToken = jwtTokenProvider.resolveToken(httpServletRequest);
         if (StringUtils.isNotEmpty(bearerToken) && jwtTokenProvider.validateToken(bearerToken)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(bearerToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
-    }
-
-    private String getBearerToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.isEmpty(bearerToken) || !bearerToken.startsWith("Bearer ")) {
-            return StringUtils.EMPTY;
-        }
-
-        return bearerToken.substring(7);
     }
 
 }
