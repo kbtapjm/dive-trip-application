@@ -26,7 +26,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -86,9 +85,9 @@ public class JwtTokenProvider implements InitializingBean {
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
-                .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 , signature 에 들어갈 secret값 세팅
+                .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 signature 에 들어갈 secret 값 세팅
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + this.accessExpirationTime)) // set Expire Time 해당 옵션 안넣으면 expire안함
+                .setExpiration(new Date(System.currentTimeMillis() + this.accessExpirationTime)) // 값을 넣지 않으면 만료 되지 않음
                 .compact();
     }
 
@@ -107,6 +106,24 @@ public class JwtTokenProvider implements InitializingBean {
                 .compact();
     }
 
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.isEmpty(bearerToken) || !bearerToken.startsWith("Bearer ")) {
+            return StringUtils.EMPTY;
+        }
+
+        return bearerToken.substring(7);
+    }
+
+    public Claims extractJwtClaims(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts
                 .parserBuilder()
@@ -120,23 +137,6 @@ public class JwtTokenProvider implements InitializingBean {
                 .collect(Collectors.toList());
 
         return new UsernamePasswordAuthenticationToken(new User(claims.getSubject(), StringUtils.EMPTY, authorities), token, authorities);
-    }
-
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.isEmpty(bearerToken) || !bearerToken.startsWith("Bearer ")) {
-            return StringUtils.EMPTY;
-        }
-
-        return bearerToken.substring(7);
-    }
-
-    public Claims extractJwtClaims(String token) {
-        SignatureAlgorithm signWith = SignatureAlgorithm.HS512;
-        SecretKeySpec secretKeySpec = new SecretKeySpec(Decoders.BASE64.decode(this.secret), signWith.getJcaName());
-
-        return Jwts.parserBuilder().setSigningKey(secretKeySpec).build()
-                .parseClaimsJws(token).getBody();
     }
 
 }
