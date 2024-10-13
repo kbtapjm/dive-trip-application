@@ -36,6 +36,16 @@ public class AuthController {
         return new ResponseEntity<>(token, httpHeaders, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/auth/refresh", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> authRefresh(@Valid @RequestBody AuthRequest.Refresh dto) {
+        AuthResponse.Token token = authService.refresh(dto);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.getTokenType(), token.getAccessToken()));
+
+        return new ResponseEntity<>(token, httpHeaders, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> signup(@Valid @RequestBody AuthRequest.Signup dto) {
         String diverId = authService.signup(dto);

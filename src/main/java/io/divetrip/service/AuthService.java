@@ -7,8 +7,8 @@ import io.divetrip.dto.response.AuthResponse;
 import io.divetrip.enumeration.DiveTripError;
 import io.divetrip.mapper.request.AuthRequestMapper;
 import io.divetrip.secuity.component.JwtTokenProvider;
-import io.divetrip.secuity.dto.request.AuthTokenRequest;
 import io.divetrip.secuity.enumeration.TokenType;
+import io.divetrip.secuity.model.AuthToken;
 import io.divetrip.secuity.service.AuthTokenService;
 import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
@@ -25,6 +25,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -57,13 +58,17 @@ public class AuthService {
         Date expirationDate = new Date(expirationTime);
         LocalDateTime expirationLocalDateTime = expirationDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        AuthTokenRequest authTokenRequest = AuthTokenRequest.builder()
-                .jwtToken(accessToken)
+        log.debug("===> Current Time: {}, Expiration Time: {}", LocalDateTime.now(), expirationLocalDateTime);
+
+        // set refresh token to redis
+        AuthToken authToken = AuthToken.builder()
+                .refreshToken(refreshToken)
                 .email(dto.getEmail())
+                .accessToken(accessToken)
                 .expiration(Duration.between(LocalDateTime.now(), expirationLocalDateTime).getSeconds())
                 .build();
 
-        authTokenService.createAuthToken(authTokenRequest);
+        authTokenService.createAuthToken(authToken);
 
         return AuthResponse.Token.builder()
                 .accessToken(accessToken)
@@ -71,6 +76,16 @@ public class AuthService {
                 .tokenType(TokenType.BEARER.getType())
                 .build();
     }
+
+    public AuthResponse.Token refresh(final AuthRequest.Refresh dto) {
+        /* get refresh token by */
+        Optional<AuthToken> authTokenOpt = authTokenService.getAuthTokenByRefreshToken(dto.getRefreshToken());
+        log.debug("===> authTokenOpt: {}, {}", authTokenOpt, authTokenOpt.isEmpty());
+
+        return AuthResponse.Token.builder()
+                .build();
+    }
+
 
     @Transactional
     public String signup(final AuthRequest.Signup dto) {

@@ -41,6 +41,15 @@ public class AuthRequest {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
+    public static class Refresh {
+        @NotBlank
+        private String refreshToken;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
     public static class Signup {
         /* 이메일 */
         @Email

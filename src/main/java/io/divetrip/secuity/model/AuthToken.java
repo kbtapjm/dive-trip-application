@@ -1,4 +1,4 @@
-package io.divetrip.secuity.dto.request;
+package io.divetrip.secuity.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,20 +10,25 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
+import java.util.concurrent.TimeUnit;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @RedisHash(value = "AuthToken")
-public class AuthTokenRequest {
+public class AuthToken {
 
     @Id
-    private String jwtToken;
+    private String refreshToken;
 
     @Indexed
     private String email;
 
-    @TimeToLive
+    @Indexed
+    private String accessToken;
+
+    @TimeToLive(unit = TimeUnit.MILLISECONDS)
     private Long expiration;
 
 }
