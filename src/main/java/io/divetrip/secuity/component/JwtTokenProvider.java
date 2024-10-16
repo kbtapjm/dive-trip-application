@@ -76,6 +76,17 @@ public class JwtTokenProvider implements InitializingBean {
         }
     }
 
+    public String createAccessToken(String subject, String claim) {
+        return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setSubject(subject)
+                .claim(AUTHORITIES_KEY, claim)
+                .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 signature 에 들어갈 secret 값 세팅
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + this.accessExpirationTime)) // 값을 넣지 않으면 만료 되지 않음
+                .compact();
+    }
+
     public String createAccessToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -88,6 +99,17 @@ public class JwtTokenProvider implements InitializingBean {
                 .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 signature 에 들어갈 secret 값 세팅
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + this.accessExpirationTime)) // 값을 넣지 않으면 만료 되지 않음
+                .compact();
+    }
+
+    public String createRefreshToken(String subject, String claim) {
+        return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setSubject(subject)
+                .claim(AUTHORITIES_KEY, claim)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + this.refreshExpirationTime))
                 .compact();
     }
 
