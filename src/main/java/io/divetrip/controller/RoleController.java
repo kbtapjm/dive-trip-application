@@ -1,6 +1,7 @@
 package io.divetrip.controller;
 
 import io.divetrip.dto.request.RoleRequest;
+import io.divetrip.dto.response.RoleResponse;
 import io.divetrip.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,11 @@ public class RoleController {
             log.debug("RoleRequest.CreateRole: {}", dto.toString());
         }
 
-        String roleId = roleService.createRole(dto);
+        RoleResponse.Role role = roleService.createRole(dto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{roleId}")
-                .buildAndExpand(roleId)
+                .buildAndExpand(role.getRoleId())
                 .toUri();
 
         return ResponseEntity.created(location).build();
@@ -59,9 +60,9 @@ public class RoleController {
             log.debug("RoleRequest.UpdateRole: {}", dto.toString());
         }
 
-        roleService.updateRole(roleId, dto);
+        RoleResponse.Role role = roleService.updateRole(roleId, dto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(role);
     }
 
     @DeleteMapping(value = "/roles/{roleId}")
