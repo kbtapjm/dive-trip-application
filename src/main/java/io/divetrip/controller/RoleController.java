@@ -60,9 +60,9 @@ public class RoleController {
             log.debug("RoleRequest.UpdateRole: {}", dto.toString());
         }
 
-        RoleResponse.Role role = roleService.updateRole(roleId, dto);
+        roleService.updateRole(roleId, dto);
 
-        return ResponseEntity.ok(role);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(value = "/roles/{roleId}")

@@ -10,8 +10,8 @@ import io.divetrip.mapper.response.RoleResponseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +29,7 @@ public class RoleService {
     private final RoleResponseMapper roleResponseMapper;
 
     @Transactional
-    @CachePut(cacheNames = "role", key = "#result.roleId")
+    @CacheEvict(cacheNames = "roles", key = "'all'")
     public RoleResponse.Role createRole(final RoleRequest.CreateRole dto) {
         if(roleRepository.existsByRoleCode(dto.getRoleCode())) {
             throw DiveTripError.ROLE_CODE_DUPLICATED.exception(dto.getRoleCode());
@@ -40,31 +40,36 @@ public class RoleService {
         return roleResponseMapper.toRoleDto(role);
     }
 
+    @Cacheable(cacheNames = "roles", key = "'all'")
     public List<RoleResponse.Roles> getRoles() {
         return roleRepository.findAll().stream()
                 .map(roleResponseMapper::toRolesDto)
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(cacheNames = "role", key = "#roleId")
+    @Cacheable(cacheNames = "roles", key = "#roleId")
     public RoleResponse.Role getRole(final UUID roleId) {
         return roleResponseMapper.toRoleDto(this.getRoleByRoleId(roleId));
     }
 
     @Transactional
-    @CachePut(cacheNames = "role", key = "#result.roleId")
-    public RoleResponse.Role updateRole(final UUID roleId, final RoleRequest.UpdateRole dto) {
+    @Caching(evict = {
+            @CacheEvict(value = "roles", key = "#roleId"),
+            @CacheEvict(value = "roles", key = "'all'")
+    })
+    public void updateRole(final UUID roleId, final RoleRequest.UpdateRole dto) {
         Role role = this.getRoleByRoleId(roleId);
         role.update(
                 dto.getRoleName(),
                 dto.getNote()
         );
-
-        return roleResponseMapper.toRoleDto(role);
     }
 
     @Transactional
-    @CacheEvict(cacheNames = "role", key = "#roleId")
+    @Caching(evict = {
+            @CacheEvict(value = "roles", key = "#roleId"),
+            @CacheEvict(value = "roles", key = "'all'")
+    })
     public void deleteRole(final UUID roleId) {
         Role role = this.getRoleByRoleId(roleId);
 
