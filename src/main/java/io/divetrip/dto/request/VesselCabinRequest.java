@@ -40,6 +40,9 @@ public class VesselCabinRequest {
         /* 에어컨 */
         private String aircon;
 
+        /* 사용 여부 */
+        private Boolean used;
+
         @Override
         public String toString() {
             return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
