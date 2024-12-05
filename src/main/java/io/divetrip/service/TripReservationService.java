@@ -35,6 +35,7 @@ public class TripReservationService {
     private final TripReservationResponseMapper tripReservationResponseMapper;
     private final DiverService diverService;
     private final TripLodgingService tripLodgingService;
+    private final PaymentService paymentService;
 
     @Transactional
     public String createTripReservation(final TripReservationRequest.CreateTripReservation dto) {
@@ -99,7 +100,7 @@ public class TripReservationService {
         tripReservationRepository.delete(tripReservation);
     }
 
-    private TripReservation getTripReservationById(final UUID tripReservationId) {
+    public TripReservation getTripReservationById(final UUID tripReservationId) {
         return tripReservationRepository.findById(tripReservationId)
             .orElseThrow(() ->  DiveTripError.TRIP_RESERVATION_NOT_FOUND.exception(tripReservationId.toString()));
     }

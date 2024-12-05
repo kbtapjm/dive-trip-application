@@ -92,4 +92,20 @@ public class TripReservationController {
         return ResponseEntity.noContent().build();
     }
 
+//    @PostMapping(value = "/trip-reservations/{tripReservationId}/payments", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> createTripReservationPayment(@PathVariable UUID tripReservationId, @Valid @RequestBody PaymentRequest.CreatePayment dto) {
+//        if (log.isDebugEnabled()) {
+//            log.debug("PaymentRequest.CreatePayment: {}", dto.toString());
+//        }
+//
+//        String paymentId = tripReservationService.createTripReservationPayment(tripReservationId, dto);
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/{tripReservationId}")
+//                .buildAndExpand(paymentId)
+//                .toUri();
+//
+//        return ResponseEntity.created(location).build();
+//    }
+
 }
