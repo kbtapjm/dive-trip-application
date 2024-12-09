@@ -12,5 +12,5 @@ import org.mapstruct.ReportingPolicy;
 public interface PaymentCreateRequestMapper extends GenericMapper<PaymentRequest.CreatePayment, Payment> {
 
     @Mapping(source = "tripReservation", target = "tripReservation")
-    Payment toEntity(PaymentRequest.CreatePayment createPayment, TripReservation tripReservation);
+    Payment toEntity(PaymentRequest.CreatePayment createPayment, TripReservation tripReservation, String paymentIp);
 }

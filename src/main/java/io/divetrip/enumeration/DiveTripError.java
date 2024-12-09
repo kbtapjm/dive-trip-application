@@ -50,6 +50,7 @@ public enum DiveTripError {
 
     // trip reservation
     TRIP_RESERVATION_NOT_FOUND("E601", "valid.trip-reservation.not.found", 404),
+    TRIP_RESERVATION_PAYMENT_COULD_NOT_MADE("E602", "valid.trip-reservation.payment.could.not.made", 400),
 
     // role
     ROLE_CODE_DUPLICATED("E701", "valid.role-code.already.exists", 400),

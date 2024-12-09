@@ -1,18 +1,23 @@
 package io.divetrip.service;
 
 import io.divetrip.domain.entity.Diver;
+import io.divetrip.domain.entity.Payment;
 import io.divetrip.domain.entity.TripLodging;
 import io.divetrip.domain.entity.TripReservation;
+import io.divetrip.domain.entity.enumeration.ReservationStatus;
 import io.divetrip.domain.repository.TripReservationRepository;
 import io.divetrip.domain.repository.dto.request.TripReservationQueryRequest;
 import io.divetrip.domain.repository.dto.response.TripReservationQueryResponse;
 import io.divetrip.dto.PageDto;
+import io.divetrip.dto.request.PaymentRequest;
 import io.divetrip.dto.request.TripReservationRequest;
 import io.divetrip.dto.response.TripReservationResponse;
 import io.divetrip.enumeration.DiveTripError;
+import io.divetrip.mapper.request.PaymentCreateRequestMapper;
 import io.divetrip.mapper.request.TripReservationRequestMapper;
 import io.divetrip.mapper.request.TripReservationStatusHistoryRequestMapper;
 import io.divetrip.mapper.response.TripReservationResponseMapper;
+import io.divetrip.util.IpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +38,7 @@ public class TripReservationService {
     private final TripReservationRequestMapper tripReservationRequestMapper;
     private final TripReservationStatusHistoryRequestMapper tripReservationStatusHistoryRequestMapper;
     private final TripReservationResponseMapper tripReservationResponseMapper;
+    private final PaymentCreateRequestMapper paymentCreateRequestMapper;
     private final DiverService diverService;
     private final TripLodgingService tripLodgingService;
     private final PaymentService paymentService;
@@ -100,9 +106,34 @@ public class TripReservationService {
         tripReservationRepository.delete(tripReservation);
     }
 
-    public TripReservation getTripReservationById(final UUID tripReservationId) {
+    private TripReservation getTripReservationById(final UUID tripReservationId) {
         return tripReservationRepository.findById(tripReservationId)
             .orElseThrow(() ->  DiveTripError.TRIP_RESERVATION_NOT_FOUND.exception(tripReservationId.toString()));
+    }
+
+    @Transactional
+    public String createTripReservationPayment(final UUID tripReservationId, final PaymentRequest.CreatePayment dto) {
+        /* get trip reservation */
+        TripReservation tripReservation = this.getTripReservationById(tripReservationId);
+        if (tripReservation.getReservationStatus() != ReservationStatus.RESERVATION_REQUESTED) {
+            throw DiveTripError.TRIP_RESERVATION_PAYMENT_COULD_NOT_MADE.exception(tripReservationId.toString());
+        }
+
+        /* create trip reservation payment */
+        Payment payment = paymentService.createPayment(paymentCreateRequestMapper.toEntity(dto, tripReservation, IpUtils.getIpFromHeader()));
+
+        /* change trip reservation status */
+        tripReservation.changeReservationStatus(ReservationStatus.PAYMENT_COMPLETED);
+
+        /* trip reservation payment completed */
+        tripReservation.paymentCompleted();
+
+        /* create trip reservation status history */
+        tripReservation.addStatusHistorys(
+                tripReservationStatusHistoryRequestMapper.toEntity(ReservationStatus.PAYMENT_COMPLETED, dto.getPaymentDetails(), tripReservation)
+        );
+
+        return payment.getPaymentId().toString();
     }
 
 }
