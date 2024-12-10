@@ -11,11 +11,13 @@ import io.divetrip.domain.repository.dto.response.TripReservationQueryResponse;
 import io.divetrip.dto.PageDto;
 import io.divetrip.dto.request.PaymentRequest;
 import io.divetrip.dto.request.TripReservationRequest;
+import io.divetrip.dto.response.PaymentResponse;
 import io.divetrip.dto.response.TripReservationResponse;
 import io.divetrip.enumeration.DiveTripError;
 import io.divetrip.mapper.request.PaymentCreateRequestMapper;
 import io.divetrip.mapper.request.TripReservationRequestMapper;
 import io.divetrip.mapper.request.TripReservationStatusHistoryRequestMapper;
+import io.divetrip.mapper.response.PaymentResponseMapper;
 import io.divetrip.mapper.response.TripReservationResponseMapper;
 import io.divetrip.util.IpUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,10 +38,13 @@ import java.util.stream.Collectors;
 public class TripReservationService {
 
     private final TripReservationRepository tripReservationRepository;
+
     private final TripReservationRequestMapper tripReservationRequestMapper;
-    private final TripReservationStatusHistoryRequestMapper tripReservationStatusHistoryRequestMapper;
     private final TripReservationResponseMapper tripReservationResponseMapper;
+    private final TripReservationStatusHistoryRequestMapper tripReservationStatusHistoryRequestMapper;
     private final PaymentCreateRequestMapper paymentCreateRequestMapper;
+    private final PaymentResponseMapper paymentResponseMapper;
+
     private final DiverService diverService;
     private final TripLodgingService tripLodgingService;
     private final PaymentService paymentService;
@@ -134,6 +140,20 @@ public class TripReservationService {
         );
 
         return payment.getPaymentId().toString();
+    }
+
+    public List<PaymentResponse.Payments> getTripReservationPayments(final UUID tripReservationId) {
+        TripReservation tripReservation = this.getTripReservationById(tripReservationId);
+
+        return paymentService.getPayments(tripReservation).stream()
+                .map(paymentResponseMapper::toPaymentsDto)
+                .collect(Collectors.toList());
+    }
+
+    public PaymentResponse.Payment getTripReservationPayment(final UUID tripReservationId, final UUID paymentId) {
+        this.getTripReservationById(tripReservationId);
+
+        return paymentResponseMapper.toPaymentDto(paymentService.getPayment(paymentId));
     }
 
 }

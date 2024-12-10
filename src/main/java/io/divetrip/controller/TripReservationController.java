@@ -111,4 +111,15 @@ public class TripReservationController {
         return ResponseEntity.created(location).build();
     }
 
+    @GetMapping(value = "/trip-reservations/{tripReservationId}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getTripReservationPayments(@PathVariable UUID tripReservationId) {
+        return ResponseEntity.ok(tripReservationService.getTripReservationPayments(tripReservationId));
+    }
+
+    @GetMapping(value = "/trip-reservations/{tripReservationId}/payments/{paymentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getTripReservationPayment(@PathVariable UUID tripReservationId, @PathVariable UUID paymentId) {
+        return ResponseEntity.ok(tripReservationService.getTripReservationPayment(tripReservationId, paymentId));
+    }
+
+
 }
