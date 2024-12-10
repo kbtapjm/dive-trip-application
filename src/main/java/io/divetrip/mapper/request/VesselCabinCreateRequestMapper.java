@@ -12,5 +12,6 @@ import org.mapstruct.ReportingPolicy;
 public interface VesselCabinCreateRequestMapper extends GenericMapper<VesselCabinRequest.CreateVesselCabin, VesselCabin> {
 
     @Mapping(source = "vessel", target = "vessel")
+    @Mapping(source = "createVesselCabin.used", target = "used")
     VesselCabin toEntity(VesselCabinRequest.CreateVesselCabin createVesselCabin, Vessel vessel);
 }

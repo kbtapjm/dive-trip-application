@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 public class PaymentRequest {
@@ -17,6 +18,7 @@ public class PaymentRequest {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
+    @ToString
     public static class CreatePayment {
         /* 결제 방법 */
         @NotNull
@@ -37,7 +39,7 @@ public class PaymentRequest {
         private String depositName;
 
         /* 카드 번호 */
-        private Integer cardNumber;
+        private String cardNumber;
 
         /* 카드사 명 */
         private String cardCompanyName;
@@ -45,13 +47,41 @@ public class PaymentRequest {
         /* 카드 명의자 명 */
         private String cardHolderName;
 
-        @AssertTrue(message = "{valid.payment.depositAccount.required}")
-        public boolean depositAccount() {
+        @AssertTrue(message = "{valid.payment.deposit-name.required}")
+        public boolean isDepositName() {
             if (paymentMethod == PaymentMethod.DIRECT_TRANSFER) {
-                return StringUtils.isEmpty(this.depositAccount);
+                return StringUtils.isNotEmpty(this.depositName);
             }
 
-            return false;
+            return true;
+        }
+
+        @AssertTrue(message = "{valid.payment.card-number.required}")
+        public boolean isCardNumber() {
+            if (paymentMethod == PaymentMethod.CREDIT_CARD) {
+                return StringUtils.isNotEmpty(this.cardNumber);
+            }
+
+            return true;
+        }
+
+        @AssertTrue(message = "{valid.payment.card-company-name.required}")
+        public boolean isCardCompanyName() {
+            if (paymentMethod == PaymentMethod.CREDIT_CARD) {
+                return StringUtils.isNotEmpty(this.cardCompanyName);
+            }
+
+            return true;
+        }
+
+        @AssertTrue(message = "{valid.payment.card-holder-name.required}")
+        public boolean isCardHolderName() {
+            if (paymentMethod == PaymentMethod.CREDIT_CARD) {
+                return StringUtils.isNotEmpty(this.cardHolderName);
+            }
+
+            return true;
         }
     }
+
 }
