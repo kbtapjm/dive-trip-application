@@ -57,6 +57,9 @@ public class TripReservationService {
         Diver diver = diverService.getDiverByDiverId(dto.getDiverId());
 
         /* set trip reservation */
+        if (tripReservationRepository.existsByDiverAndTripLodging(diver, tripLodging)) {
+            throw DiveTripError.TRIP_RESERVATION_DUPLICATED.exception();
+        }
         TripReservation tripReservation = tripReservationRepository.save(tripReservationRequestMapper.toEntity(dto, diver, tripLodging));
 
         /* add trip reservation status history */
@@ -111,6 +114,19 @@ public class TripReservationService {
     private TripReservation getTripReservationById(final UUID tripReservationId) {
         return tripReservationRepository.findById(tripReservationId)
             .orElseThrow(() ->  DiveTripError.TRIP_RESERVATION_NOT_FOUND.exception(tripReservationId.toString()));
+    }
+
+    @Transactional
+    public void updateTripReservationStatus(final UUID tripReservationId, final TripReservationRequest.updateTripReservationStatus dto) {
+        TripReservation tripReservation = this.getTripReservationById(tripReservationId);
+
+        /* change trip reservation status */
+        tripReservation.changeReservationStatus(dto.getReservationStatus());
+
+        /* add trip reservation status history */
+        tripReservation.addStatusHistoryList(
+                tripReservationStatusHistoryRequestMapper.toEntity(dto.getReservationStatus(), dto.getNote(), tripReservation)
+        );
     }
 
     @Transactional

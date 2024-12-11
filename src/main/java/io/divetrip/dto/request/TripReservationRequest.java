@@ -90,6 +90,19 @@ public class TripReservationRequest {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    public static class updateTripReservationStatus {
+        /* 예약 상태 */
+        @NotNull
+        private ReservationStatus reservationStatus;
+
+        /* 비고 */
+        private String note;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @SuperBuilder
     @AllArgsConstructor
     @ToString(callSuper = true)

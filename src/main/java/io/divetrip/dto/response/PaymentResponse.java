@@ -1,6 +1,7 @@
 package io.divetrip.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.divetrip.domain.entity.enumeration.PaymentMethod;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ public class PaymentResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class Payments {
         /* 결제 ID */
         private UUID paymentId;
@@ -68,6 +70,7 @@ public class PaymentResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class Payment {
         /* 결제 ID */
         private UUID paymentId;

@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -91,6 +92,13 @@ public class TripReservationController {
         tripReservationService.deleteTripReservation(tripReservationId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/trip-reservations/{tripReservationId}/status", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateTripReservationStatus(@PathVariable UUID tripReservationId, @Valid @RequestBody TripReservationRequest.updateTripReservationStatus dto) {
+        tripReservationService.updateTripReservationStatus(tripReservationId, dto);
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/trip-reservations/{tripReservationId}/payments", consumes = MediaType.APPLICATION_JSON_VALUE)
