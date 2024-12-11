@@ -27,10 +27,6 @@ public class TripReservationRequest {
         @NotNull
         private ReservationStatus reservationStatus;
 
-        /* 결제 여부 */
-        @NotNull
-        private Boolean paid;
-
         /* 출발 편명 */
         private String departureFlightNumbers;
 
@@ -70,14 +66,6 @@ public class TripReservationRequest {
     @AllArgsConstructor
     @Builder
     public static class updateTripReservation {
-        /* 예약 상태 */
-        @NotNull
-        private ReservationStatus reservationStatus;
-
-        /* 결제 여부 */
-        @NotNull
-        private Boolean paid;
-
         /* 출발 편명 */
         private String departureFlightNumbers;
 
@@ -95,10 +83,6 @@ public class TripReservationRequest {
         /* 마지막 다이브 날짜 */
         @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
         private LocalDate lastDiveDate;
-
-        /* 약관 동의 여부 */
-        @NotNull
-        private Boolean agreeTerms;
 
         /* 비고 */
         private String note;

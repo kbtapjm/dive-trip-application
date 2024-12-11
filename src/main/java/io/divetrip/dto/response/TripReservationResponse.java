@@ -25,6 +25,18 @@ public class TripReservationResponse {
         /* 여행 예약 ID */
         private UUID tripReservationId;
 
+        /* 여행 숙소 ID */
+        private UUID tripLodgingId;
+
+        /* 다이버 ID */
+        private UUID diverId;
+
+        /* 다이버 성 */
+        private String familyName;
+
+        /* 다이버 이름 */
+        private String givenName;
+
         /* 예약 상태 */
         private ReservationStatus reservationStatus;
 
@@ -77,6 +89,12 @@ public class TripReservationResponse {
     public static class TripReservation {
         /* 여행 예약 ID */
         private UUID tripReservationId;
+
+        /* 여행 숙소 ID */
+        private UUID tripLodgingId;
+
+        /* 다이버 ID */
+        private UUID diverId;
 
         /* 예약 상태 */
         private ReservationStatus reservationStatus;

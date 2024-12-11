@@ -22,7 +22,6 @@ import io.divetrip.mapper.response.TripReservationResponseMapper;
 import io.divetrip.util.IpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -60,8 +59,8 @@ public class TripReservationService {
         /* set trip reservation */
         TripReservation tripReservation = tripReservationRepository.save(tripReservationRequestMapper.toEntity(dto, diver, tripLodging));
 
-        /* set trip reservation status history */
-        tripReservation.addStatusHistorys(tripReservationStatusHistoryRequestMapper.toEntity(dto.getReservationStatus(), StringUtils.EMPTY, tripReservation));
+        /* add trip reservation status history */
+        tripReservation.addStatusHistoryList(tripReservationStatusHistoryRequestMapper.toEntity(dto.getReservationStatus(), dto.getNote(), tripReservation));
 
         return tripReservation.getTripReservationId().toString();
     }
@@ -94,14 +93,11 @@ public class TripReservationService {
         TripReservation tripReservation = this.getTripReservationById(tripReservationId);
 
         tripReservation.update(
-            dto.getReservationStatus(),
-            dto.getPaid(),
             dto.getDepartureFlightNumbers(),
             dto.getDepartureFlightDate(),
             dto.getArrivalFlightNumbers(),
             dto.getArrivalFlightDate(),
             dto.getLastDiveDate(),
-            dto.getAgreeTerms(),
             dto.getNote()
         );
     }
@@ -134,8 +130,8 @@ public class TripReservationService {
         /* trip reservation payment completed */
         tripReservation.paymentCompleted();
 
-        /* create trip reservation status history */
-        tripReservation.addStatusHistorys(
+        /* add trip reservation status history */
+        tripReservation.addStatusHistoryList(
                 tripReservationStatusHistoryRequestMapper.toEntity(ReservationStatus.PAYMENT_COMPLETED, dto.getPaymentDetails(), tripReservation)
         );
 
