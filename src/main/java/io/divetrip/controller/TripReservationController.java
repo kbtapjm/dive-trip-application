@@ -101,6 +101,11 @@ public class TripReservationController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/trip-reservations/{tripReservationId}/status-history", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getTripReservationStatusHistory(@PathVariable UUID tripReservationId) {
+        return ResponseEntity.ok(tripReservationService.getTripReservationStatusHistoryList(tripReservationId));
+    }
+
     @PostMapping(value = "/trip-reservations/{tripReservationId}/payments", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createTripReservationPayment(
             @PathVariable UUID tripReservationId,

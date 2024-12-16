@@ -14,11 +14,13 @@ import io.divetrip.dto.request.PaymentRequest;
 import io.divetrip.dto.request.TripReservationRequest;
 import io.divetrip.dto.response.PaymentResponse;
 import io.divetrip.dto.response.TripReservationResponse;
+import io.divetrip.dto.response.TripReservationStatusHistoryResponse;
 import io.divetrip.enumeration.DiveTripError;
 import io.divetrip.mapper.request.TripReservationRequestMapper;
 import io.divetrip.mapper.request.TripReservationStatusHistoryRequestMapper;
 import io.divetrip.mapper.response.PaymentResponseMapper;
 import io.divetrip.mapper.response.TripReservationResponseMapper;
+import io.divetrip.mapper.response.TripReservationStatusHistoryResponseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -40,6 +42,7 @@ public class TripReservationService {
     private final TripReservationRequestMapper tripReservationRequestMapper;
     private final TripReservationResponseMapper tripReservationResponseMapper;
     private final TripReservationStatusHistoryRequestMapper tripReservationStatusHistoryRequestMapper;
+    private final TripReservationStatusHistoryResponseMapper tripReservationStatusHistoryResponseMapper;
     private final PaymentResponseMapper paymentResponseMapper;
 
     private final DiverService diverService;
@@ -125,6 +128,14 @@ public class TripReservationService {
         tripReservation.addStatusHistoryList(
                 tripReservationStatusHistoryRequestMapper.toEntity(dto.getReservationStatus(), dto.getNote(), tripReservation)
         );
+    }
+
+    public List<TripReservationStatusHistoryResponse.TripReservationStatusHistorys> getTripReservationStatusHistoryList(final UUID tripReservationId) {
+        TripReservation tripReservation = this.getTripReservationById(tripReservationId);
+
+        return tripReservation.getStatusHistorys().stream()
+                .map(tripReservationStatusHistoryResponseMapper::toListDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional
