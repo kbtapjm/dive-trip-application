@@ -40,9 +40,6 @@ public class TripReservationResponse {
         /* 예약 상태 */
         private ReservationStatus reservationStatus;
 
-        /* 결제 여부 */
-        private Boolean paid;
-
         /* 출발 편명 */
         private String departureFlightNumbers;
 
@@ -98,9 +95,6 @@ public class TripReservationResponse {
 
         /* 예약 상태 */
         private ReservationStatus reservationStatus;
-
-        /* 결제 여부 */
-        private Boolean paid;
 
         /* 출발 편명 */
         private String departureFlightNumbers;

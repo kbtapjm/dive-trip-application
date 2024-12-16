@@ -3,6 +3,7 @@ package io.divetrip.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.divetrip.domain.entity.enumeration.PaymentMethod;
+import io.divetrip.domain.entity.enumeration.PaymentStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +33,9 @@ public class PaymentResponse {
         /* 결제 일시 */
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
         private LocalDateTime paymentDate;
+
+        /* 결제 상태 */
+        private PaymentStatus paymentStatus;
 
         /* 결제 내용 */
         private String paymentDetails;
@@ -84,6 +88,9 @@ public class PaymentResponse {
         /* 결제 일시 */
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
         private LocalDateTime paymentDate;
+
+        /* 결제 상태 */
+        private PaymentStatus paymentStatus;
 
         /* 결제 내용 */
         private String paymentDetails;

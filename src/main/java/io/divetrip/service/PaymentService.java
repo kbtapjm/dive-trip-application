@@ -2,8 +2,12 @@ package io.divetrip.service;
 
 import io.divetrip.domain.entity.Payment;
 import io.divetrip.domain.entity.TripReservation;
+import io.divetrip.domain.entity.enumeration.PaymentStatus;
 import io.divetrip.domain.repository.PaymentRepository;
+import io.divetrip.dto.request.PaymentRequest;
 import io.divetrip.enumeration.DiveTripError;
+import io.divetrip.mapper.request.PaymentCreateRequestMapper;
+import io.divetrip.util.IpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +18,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PaymentService {
     private final PaymentRepository paymentRepository;
+    private final PaymentCreateRequestMapper paymentCreateRequestMapper;
 
-    public Payment createPayment(final Payment payment) {
+    public Payment createPayment(TripReservation tripReservation, PaymentRequest.CreatePayment dto) {
+        /* Payment service integration */
+        String paymentIp = IpUtils.getIpFromHeader();
+
+        Payment payment = paymentCreateRequestMapper.toEntity(dto, PaymentStatus.COMPLETED, tripReservation, paymentIp);
+
         return paymentRepository.save(payment);
     }
 

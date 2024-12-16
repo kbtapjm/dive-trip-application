@@ -4,6 +4,7 @@ import io.divetrip.domain.entity.Diver;
 import io.divetrip.domain.entity.Payment;
 import io.divetrip.domain.entity.TripLodging;
 import io.divetrip.domain.entity.TripReservation;
+import io.divetrip.domain.entity.enumeration.PaymentStatus;
 import io.divetrip.domain.entity.enumeration.ReservationStatus;
 import io.divetrip.domain.repository.TripReservationRepository;
 import io.divetrip.domain.repository.dto.request.TripReservationQueryRequest;
@@ -14,12 +15,10 @@ import io.divetrip.dto.request.TripReservationRequest;
 import io.divetrip.dto.response.PaymentResponse;
 import io.divetrip.dto.response.TripReservationResponse;
 import io.divetrip.enumeration.DiveTripError;
-import io.divetrip.mapper.request.PaymentCreateRequestMapper;
 import io.divetrip.mapper.request.TripReservationRequestMapper;
 import io.divetrip.mapper.request.TripReservationStatusHistoryRequestMapper;
 import io.divetrip.mapper.response.PaymentResponseMapper;
 import io.divetrip.mapper.response.TripReservationResponseMapper;
-import io.divetrip.util.IpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -41,7 +40,6 @@ public class TripReservationService {
     private final TripReservationRequestMapper tripReservationRequestMapper;
     private final TripReservationResponseMapper tripReservationResponseMapper;
     private final TripReservationStatusHistoryRequestMapper tripReservationStatusHistoryRequestMapper;
-    private final PaymentCreateRequestMapper paymentCreateRequestMapper;
     private final PaymentResponseMapper paymentResponseMapper;
 
     private final DiverService diverService;
@@ -133,23 +131,22 @@ public class TripReservationService {
     public String createTripReservationPayment(final UUID tripReservationId, final PaymentRequest.CreatePayment dto) {
         /* get trip reservation */
         TripReservation tripReservation = this.getTripReservationById(tripReservationId);
-        if (tripReservation.getReservationStatus() != ReservationStatus.RESERVATION_REQUESTED) {
+        if (tripReservation.getReservationStatus() != ReservationStatus.REQUESTED) {
             throw DiveTripError.TRIP_RESERVATION_PAYMENT_COULD_NOT_MADE.exception(tripReservationId.toString());
         }
 
         /* create trip reservation payment */
-        Payment payment = paymentService.createPayment(paymentCreateRequestMapper.toEntity(dto, tripReservation, IpUtils.getIpFromHeader()));
+        Payment payment = paymentService.createPayment(tripReservation, dto);
 
-        /* change trip reservation status */
-        tripReservation.changeReservationStatus(ReservationStatus.PAYMENT_COMPLETED);
+        if (payment.getPaymentStatus() == PaymentStatus.COMPLETED) {
+            /* trip reservation payment completed */
+            tripReservation.tripReservationCompleted();
 
-        /* trip reservation payment completed */
-        tripReservation.paymentCompleted();
-
-        /* add trip reservation status history */
-        tripReservation.addStatusHistoryList(
-                tripReservationStatusHistoryRequestMapper.toEntity(ReservationStatus.PAYMENT_COMPLETED, dto.getPaymentDetails(), tripReservation)
-        );
+            /* add trip reservation status history */
+            tripReservation.addStatusHistoryList(
+                    tripReservationStatusHistoryRequestMapper.toEntity(ReservationStatus.COMPLETED, dto.getPaymentDetails(), tripReservation)
+            );
+        }
 
         return payment.getPaymentId().toString();
     }
