@@ -16,11 +16,14 @@ import io.divetrip.dto.response.PaymentResponse;
 import io.divetrip.dto.response.TripReservationResponse;
 import io.divetrip.dto.response.TripReservationStatusHistoryResponse;
 import io.divetrip.enumeration.DiveTripError;
+import io.divetrip.kafka.NotificationProducer;
 import io.divetrip.mapper.request.TripReservationRequestMapper;
 import io.divetrip.mapper.request.TripReservationStatusHistoryRequestMapper;
 import io.divetrip.mapper.response.PaymentResponseMapper;
 import io.divetrip.mapper.response.TripReservationResponseMapper;
 import io.divetrip.mapper.response.TripReservationStatusHistoryResponseMapper;
+import io.divetrip.message.model.Notification;
+import io.divetrip.secuity.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,6 +31,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,6 +52,7 @@ public class TripReservationService {
     private final DiverService diverService;
     private final TripLodgingService tripLodgingService;
     private final PaymentService paymentService;
+    private final NotificationProducer notificationProducer;
 
     @Transactional
     public String createTripReservation(final TripReservationRequest.CreateTripReservation dto) {
@@ -65,6 +70,15 @@ public class TripReservationService {
 
         /* add trip reservation status history */
         tripReservation.addStatusHistoryList(tripReservationStatusHistoryRequestMapper.toEntity(dto.getReservationStatus(), dto.getNote(), tripReservation));
+
+        /* send trip reservation notification message */
+        Notification notification = Notification.builder()
+                .name("Trip Reservation Information")
+                .message("Your travel reservation request has been completed")
+                .createdBy(SecurityUtil.getCurrentUser().get())
+                .createdAt(LocalDateTime.now())
+                .build();
+        notificationProducer.sendWithCallback(notification);
 
         return tripReservation.getTripReservationId().toString();
     }
