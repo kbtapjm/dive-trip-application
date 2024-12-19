@@ -27,4 +27,8 @@ public class SecurityUtil {
         return Optional.ofNullable(username);
     }
 
+    public String getUserId() {
+        return SecurityUtil.getCurrentUser().orElse(null);
+    }
+
 }

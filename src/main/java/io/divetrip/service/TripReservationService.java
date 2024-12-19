@@ -75,9 +75,10 @@ public class TripReservationService {
         Notification notification = Notification.builder()
                 .name("Trip Reservation Information")
                 .message("Your travel reservation request has been completed")
-                .createdBy(SecurityUtil.getCurrentUser().get())
+                .createdBy(SecurityUtil.getUserId())
                 .createdAt(LocalDateTime.now())
                 .build();
+
         notificationProducer.sendWithCallback(notification);
 
         return tripReservation.getTripReservationId().toString();

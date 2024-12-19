@@ -1,10 +1,8 @@
 package io.divetrip.kafka;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.divetrip.message.model.Notification;
+import io.divetrip.util.ObjectMapperUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -31,13 +29,7 @@ public class NotificationProducer {
     }
 
     public void sendWithCallback(Notification notification) {
-        ObjectMapper mapper = new ObjectMapper();
-        String data = StringUtils.EMPTY;
-        try {
-            data = mapper.writeValueAsString(notification);
-        } catch (JsonProcessingException ex) {
-            log.error("JsonProcessingException: {}", ex.getMessage(), ex);
-        }
+        String data = ObjectMapperUtils.writeValueAsString(notification);
 
         CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(TOPIC_NAME, data);
         future.whenComplete((result, e) -> {
@@ -45,7 +37,18 @@ public class NotificationProducer {
                 log.error("sendWithCallback error: {}", e.getMessage(), e);
             }
 
-            log.debug("sendWithCallback result: {}", result.getRecordMetadata());
+            log.debug("####################################################################################################################");
+            log.debug("sendWithCallback ProducerRecord: {}", result.getProducerRecord());
+            log.debug("sendWithCallback RecordMetadata: {}", result.getRecordMetadata());
+            log.debug("sendWithCallback RecordMetadata hasOffset: {}", result.getRecordMetadata().hasOffset());
+            log.debug("sendWithCallback RecordMetadata offset: {}", result.getRecordMetadata().offset());
+            log.debug("sendWithCallback RecordMetadata topic: {}", result.getRecordMetadata().topic());
+            log.debug("sendWithCallback RecordMetadata hasTimestamp: {}", result.getRecordMetadata().hasTimestamp());
+            log.debug("sendWithCallback RecordMetadata partition: {}", result.getRecordMetadata().partition());
+            log.debug("sendWithCallback RecordMetadata serializedKeySize: {}", result.getRecordMetadata().serializedKeySize());
+            log.debug("sendWithCallback RecordMetadata serializedValueSize: {}", result.getRecordMetadata().serializedValueSize());
+            log.debug("sendWithCallback RecordMetadata timestamp: {}", result.getRecordMetadata().timestamp());
+            log.debug("####################################################################################################################");
         });
     }
 
