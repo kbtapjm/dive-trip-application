@@ -143,6 +143,16 @@ public class TripReservationService {
         tripReservation.addStatusHistoryList(
                 tripReservationStatusHistoryRequestMapper.toEntity(dto.getReservationStatus(), dto.getNote(), tripReservation)
         );
+
+        /* send trip reservation notification message */
+        Notification notification = Notification.builder()
+                .name("Trip Reservation Information")
+                .message("Your travel reservation status has changed")
+                .createdBy(SecurityUtil.getUserId())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        notificationProducer.sendWithCallback(notification);
     }
 
     public List<TripReservationStatusHistoryResponse.TripReservationStatusHistorys> getTripReservationStatusHistoryList(final UUID tripReservationId) {
