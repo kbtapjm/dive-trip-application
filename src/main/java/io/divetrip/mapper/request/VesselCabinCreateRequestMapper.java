@@ -11,7 +11,14 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface VesselCabinCreateRequestMapper extends GenericMapper<VesselCabinRequest.CreateVesselCabin, VesselCabin> {
 
-    @Mapping(source = "vessel", target = "vessel")
+    @Mapping(source = "createVesselCabin.cabinName", target = "cabinName")
+    @Mapping(source = "createVesselCabin.description", target = "description")
+    @Mapping(source = "createVesselCabin.size", target = "size")
+    @Mapping(source = "createVesselCabin.maxOccupancy", target = "maxOccupancy")
+    @Mapping(source = "createVesselCabin.bedding", target = "bedding")
+    @Mapping(source = "createVesselCabin.ensuiteBathroom", target = "ensuiteBathroom")
+    @Mapping(source = "createVesselCabin.aircon", target = "aircon")
     @Mapping(source = "createVesselCabin.used", target = "used")
+    @Mapping(source = "vessel", target = "vessel")
     VesselCabin toEntity(VesselCabinRequest.CreateVesselCabin createVesselCabin, Vessel vessel);
 }

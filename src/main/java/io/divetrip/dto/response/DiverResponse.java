@@ -175,6 +175,7 @@ public class DiverResponse {
     public static class DiverList {
 
         /* 컨텐트 */
+        @Builder.Default
         private List<Divers> content = List.of();
 
         /* Page 정보 */

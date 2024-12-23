@@ -83,6 +83,7 @@ public class TripResponse {
     @AllArgsConstructor
     @Builder
     public static class TripResult {
+        @Builder.Default
         private List<Trips> content = List.of();
         private PageDto page;
         private TripRequest.SearchTrip search;
@@ -140,12 +141,15 @@ public class TripResponse {
         private LocalDateTime updatedAt;
 
         /* 여행 일정 */
+        @Builder.Default
         private List<TripSchedule> schedules = new ArrayList<>();
 
         /* 여행 숙소 */
+        @Builder.Default
         private List<TripLodging> lodgings = new ArrayList<>();
 
         /* 여행 상태 이력 */
+        @Builder.Default
         private List<TripStatusHistory> statusHistorys = new ArrayList<>();
     }
 

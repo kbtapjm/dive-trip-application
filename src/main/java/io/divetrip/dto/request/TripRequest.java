@@ -73,12 +73,14 @@ public class TripRequest {
         @Valid
         @NotNull
         @Size(min = 1)
+        @Builder.Default
         private List<CreateTripSchedule> schedules = new ArrayList<>();
 
         /* 여행 숙소 */
         @Valid
         @NotNull
         @Size(min = 1)
+        @Builder.Default
         private List<CreateTripLodging> lodgings = new ArrayList<>();
     }
 
@@ -132,12 +134,14 @@ public class TripRequest {
         @Valid
         @NotNull
         @Size(min = 1)
+        @Builder.Default
         private List<CreateTripSchedule> schedules = new ArrayList<>();
 
         /* 여행 숙소 */
         @Valid
         @NotNull
         @Size(min = 1)
+        @Builder.Default
         private List<CreateTripLodging> lodgings = new ArrayList<>();
     }
 

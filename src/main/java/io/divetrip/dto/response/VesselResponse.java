@@ -182,6 +182,7 @@ public class VesselResponse {
     @Builder
     public static class VesselResult {
         /* 컨텐트 */
+        @Builder.Default
         private List<VesselResponse.Vessels> content = List.of();
 
         /* Page 정보 */

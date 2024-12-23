@@ -16,7 +16,7 @@ import io.divetrip.dto.response.PaymentResponse;
 import io.divetrip.dto.response.TripReservationResponse;
 import io.divetrip.dto.response.TripReservationStatusHistoryResponse;
 import io.divetrip.enumeration.DiveTripError;
-import io.divetrip.kafka.NotificationProducer;
+import io.divetrip.message.NotificationProducer;
 import io.divetrip.mapper.request.TripReservationRequestMapper;
 import io.divetrip.mapper.request.TripReservationStatusHistoryRequestMapper;
 import io.divetrip.mapper.response.PaymentResponseMapper;
@@ -143,6 +143,16 @@ public class TripReservationService {
         tripReservation.addStatusHistoryList(
                 tripReservationStatusHistoryRequestMapper.toEntity(dto.getReservationStatus(), dto.getNote(), tripReservation)
         );
+
+        /* send trip reservation notification message */
+        Notification notification = Notification.builder()
+                .name("Trip Reservation Information")
+                .message("Your travel reservation status has changed")
+                .createdBy(SecurityUtil.getUserId())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        notificationProducer.sendWithCallback(notification);
     }
 
     public List<TripReservationStatusHistoryResponse.TripReservationStatusHistorys> getTripReservationStatusHistoryList(final UUID tripReservationId) {

@@ -140,6 +140,7 @@ public class TripReservationResponse {
     @AllArgsConstructor
     @Builder
     public static class TripReservationResult {
+        @Builder.Default
         private List<TripReservations> content = List.of();
         private PageDto page;
         private TripReservationRequest.SearchTripReservation search;
