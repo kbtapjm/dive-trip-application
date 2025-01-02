@@ -6,6 +6,7 @@ import io.divetrip.secuity.handler.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,8 +30,14 @@ public class SecurityConfig {
             "/h2-console/**",
             "/favicon.ico",
             "/swagger-ui/**",
+            "/swagger-resources",
             "/swagger-resources/**",
             "/api-docs/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs/swagger-config/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/webjars/**",
             "/api/v1/signup",
             "/api/v1/auth/token",
             "/api/v1/auth/refresh"
@@ -58,7 +65,7 @@ public class SecurityConfig {
                     authorizeRequests.requestMatchers(ALLOWED_REQUEST_URIS).permitAll();
                     authorizeRequests.anyRequest().authenticated();
                 })
-                .apply(new JwtSecurityConfig(jwtTokenProvider));
+                .with(new JwtSecurityConfig(jwtTokenProvider), Customizer.withDefaults());
 
         return httpSecurity.build();
     }
