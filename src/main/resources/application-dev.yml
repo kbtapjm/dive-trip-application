@@ -26,6 +26,14 @@ spring:
   kafka:
     producer:
       bootstrap-servers: localhost:9092 # Kafka 클러스터에 대한 초기 연결에 사용할 호스트 : 포트 목록
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+      remote:
+        restart:
+          enabled: false
 
 spring-doc:
   swagger-ui:

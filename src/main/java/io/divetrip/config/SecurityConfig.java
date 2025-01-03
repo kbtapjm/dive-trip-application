@@ -38,6 +38,7 @@ public class SecurityConfig {
             "/configuration/ui",
             "/configuration/security",
             "/webjars/**",
+            "/actuator/**",
             "/api/v1/signup",
             "/api/v1/auth/token",
             "/api/v1/auth/refresh"

@@ -13,6 +13,26 @@ server:
 spring:
   cache: redis
 
+management:
+  health:
+    defaults:
+      enabled: true #자동설정된 health 정보를 사용
+  endpoints:
+    web:
+      exposure:
+        include: "*" #전체 정보를 표시하지만 운영할때 특정 엔트포인트만 노출(health,info,metrics,..)
+      base-path: /actuator
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: always #상세정보 확인(never: 표시안함)
+  info:
+    git:
+      mode: simple
+    java:
+      enabled: true
+
 
 
 
