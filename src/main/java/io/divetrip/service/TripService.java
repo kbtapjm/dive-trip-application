@@ -20,11 +20,14 @@ import io.divetrip.mapper.response.TripLodgingResponseMapper;
 import io.divetrip.mapper.response.TripResponseMapper;
 import io.divetrip.mapper.response.TripScheduleResponseMapper;
 import io.divetrip.mapper.response.TripStatusHistoryResponseMapper;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -177,6 +180,21 @@ public class TripService {
         }
 
         tripRepository.delete(trip);
+    }
+
+    @Retryable(
+            value = OptimisticLockException.class, // 변경된 레코드 수가 0개일 때, 발생하는 예외
+            maxAttempts = 5, // 최대 실행 횟수
+            backoff = @Backoff(
+                    random = true, // 재시도 시간 랜덤 적용 여부
+                    delay = 100, // 재시도 지연 시간
+                    maxDelay = 3000 // 재시도 지연 최대 시간
+            )
+    )
+    @Transactional
+    public void updateFavorites(final UUID tripId) {
+        Trip trip = this.getTripByTripId(tripId);
+        trip.increaseFavorites();
     }
 
     private Trip getTripByTripId(final UUID tripId) {
