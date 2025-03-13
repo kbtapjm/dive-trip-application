@@ -2,7 +2,7 @@ package io.divetrip.application.message;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.divetrip.message.model.Notification;
+import io.divetrip.library.message.model.Notification;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

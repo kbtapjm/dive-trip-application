@@ -1,8 +1,8 @@
 package io.divetrip.application.service.support;
 
-import io.divetrip.domain.entity.Diver;
-import io.divetrip.domain.entity.enumeration.Gender;
 import io.divetrip.application.dto.request.DiverRequest;
+import io.divetrip.library.domain.entity.Diver;
+import io.divetrip.library.domain.entity.enumeration.Gender;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;

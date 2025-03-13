@@ -1,6 +1,6 @@
 package io.divetrip.application.dto.request;
 
-import io.divetrip.domain.entity.enumeration.PaymentMethod;
+import io.divetrip.library.domain.entity.enumeration.PaymentMethod;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;

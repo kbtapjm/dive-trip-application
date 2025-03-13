@@ -1,7 +1,7 @@
 package io.divetrip.application.mapper.request;
 
-import io.divetrip.domain.entity.Diver;
 import io.divetrip.application.dto.request.AuthRequest;
+import io.divetrip.library.domain.entity.Diver;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

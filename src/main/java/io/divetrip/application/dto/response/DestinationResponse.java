@@ -1,7 +1,7 @@
 package io.divetrip.application.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.divetrip.domain.entity.enumeration.Continent;
+import io.divetrip.library.domain.entity.enumeration.Continent;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,7 +1,7 @@
 package io.divetrip.application.dto.request;
 
-import io.divetrip.domain.entity.enumeration.VesselStatus;
-import io.divetrip.dto.SearchDto;
+import io.divetrip.library.domain.entity.enumeration.VesselStatus;
+import io.divetrip.library.dto.SearchDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

@@ -1,10 +1,10 @@
 package io.divetrip.application.mapper.request;
 
-import io.divetrip.domain.entity.Diver;
-import io.divetrip.domain.entity.TripLodging;
-import io.divetrip.domain.entity.TripReservation;
 import io.divetrip.application.dto.request.TripReservationRequest;
-import io.divetrip.mapper.GenericMapper;
+import io.divetrip.library.domain.entity.Diver;
+import io.divetrip.library.domain.entity.TripLodging;
+import io.divetrip.library.domain.entity.TripReservation;
+import io.divetrip.library.mapper.GenericMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

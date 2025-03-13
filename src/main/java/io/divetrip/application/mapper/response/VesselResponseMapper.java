@@ -1,8 +1,8 @@
 package io.divetrip.application.mapper.response;
 
-import io.divetrip.domain.entity.Vessel;
-import io.divetrip.domain.repository.dto.response.VesselQueryResponse;
 import io.divetrip.application.dto.response.VesselResponse;
+import io.divetrip.library.domain.entity.Vessel;
+import io.divetrip.library.domain.repository.dto.response.VesselQueryResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

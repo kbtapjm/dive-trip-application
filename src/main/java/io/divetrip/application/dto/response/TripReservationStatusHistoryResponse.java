@@ -1,6 +1,6 @@
 package io.divetrip.application.dto.response;
 
-import io.divetrip.domain.entity.enumeration.ReservationStatus;
+import io.divetrip.library.domain.entity.enumeration.ReservationStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

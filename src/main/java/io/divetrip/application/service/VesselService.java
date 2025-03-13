@@ -1,15 +1,15 @@
 package io.divetrip.application.service;
 
-import io.divetrip.domain.entity.Vessel;
-import io.divetrip.domain.repository.VesselRepository;
-import io.divetrip.domain.repository.dto.request.VesselQueryRequest;
-import io.divetrip.domain.repository.dto.response.VesselQueryResponse;
-import io.divetrip.dto.PageDto;
 import io.divetrip.application.dto.request.VesselRequest;
 import io.divetrip.application.dto.response.VesselResponse;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.VesselCreateRequestMapper;
 import io.divetrip.application.mapper.response.VesselResponseMapper;
+import io.divetrip.library.domain.entity.Vessel;
+import io.divetrip.library.domain.repository.VesselRepository;
+import io.divetrip.library.domain.repository.dto.request.VesselQueryRequest;
+import io.divetrip.library.domain.repository.dto.response.VesselQueryResponse;
+import io.divetrip.library.dto.PageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

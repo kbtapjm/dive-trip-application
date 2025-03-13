@@ -1,6 +1,7 @@
 package io.divetrip.application.dto.request;
 
-import io.divetrip.domain.entity.enumeration.Continent;
+
+import io.divetrip.library.domain.entity.enumeration.Continent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

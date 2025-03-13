@@ -1,15 +1,16 @@
 package io.divetrip.application.service;
 
-import io.divetrip.domain.entity.Country;
-import io.divetrip.domain.entity.Destination;
-import io.divetrip.domain.repository.DestinationRepository;
-import io.divetrip.domain.repository.dto.request.DestinationQueryRequest;
-import io.divetrip.domain.repository.dto.response.DestinationQueryResponse;
+
 import io.divetrip.application.dto.request.DestinationRequest;
 import io.divetrip.application.dto.response.DestinationResponse;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.DestinationRequestMapper;
 import io.divetrip.application.mapper.response.DestinationResponseMapper;
+import io.divetrip.library.domain.entity.Country;
+import io.divetrip.library.domain.entity.Destination;
+import io.divetrip.library.domain.repository.DestinationRepository;
+import io.divetrip.library.domain.repository.dto.request.DestinationQueryRequest;
+import io.divetrip.library.domain.repository.dto.response.DestinationQueryResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

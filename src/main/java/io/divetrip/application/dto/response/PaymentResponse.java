@@ -2,8 +2,8 @@ package io.divetrip.application.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.divetrip.domain.entity.enumeration.PaymentMethod;
-import io.divetrip.domain.entity.enumeration.PaymentStatus;
+import io.divetrip.library.domain.entity.enumeration.PaymentMethod;
+import io.divetrip.library.domain.entity.enumeration.PaymentStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

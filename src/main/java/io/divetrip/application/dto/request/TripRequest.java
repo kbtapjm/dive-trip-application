@@ -1,8 +1,8 @@
 package io.divetrip.application.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.divetrip.domain.entity.enumeration.TripStatus;
-import io.divetrip.dto.SearchDto;
+import io.divetrip.library.domain.entity.enumeration.TripStatus;
+import io.divetrip.library.dto.SearchDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

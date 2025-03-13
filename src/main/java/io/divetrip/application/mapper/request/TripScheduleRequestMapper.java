@@ -1,9 +1,9 @@
 package io.divetrip.application.mapper.request;
 
-import io.divetrip.domain.entity.Trip;
-import io.divetrip.domain.entity.TripSchedule;
 import io.divetrip.application.dto.request.TripRequest;
-import io.divetrip.mapper.GenericMapper;
+import io.divetrip.library.domain.entity.Trip;
+import io.divetrip.library.domain.entity.TripSchedule;
+import io.divetrip.library.mapper.GenericMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

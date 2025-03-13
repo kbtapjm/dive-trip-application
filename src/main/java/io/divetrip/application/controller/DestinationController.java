@@ -1,8 +1,8 @@
 package io.divetrip.application.controller;
 
-import io.divetrip.domain.entity.enumeration.Continent;
 import io.divetrip.application.dto.request.DestinationRequest;
 import io.divetrip.application.service.DestinationService;
+import io.divetrip.library.domain.entity.enumeration.Continent;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

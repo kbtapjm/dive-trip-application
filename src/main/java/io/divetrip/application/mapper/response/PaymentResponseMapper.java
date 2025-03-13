@@ -1,7 +1,7 @@
 package io.divetrip.application.mapper.response;
 
-import io.divetrip.domain.entity.Payment;
 import io.divetrip.application.dto.response.PaymentResponse;
+import io.divetrip.library.domain.entity.Payment;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

@@ -1,10 +1,10 @@
 package io.divetrip.application.service;
 
-import io.divetrip.domain.entity.Country;
-import io.divetrip.domain.repository.CountryRepository;
 import io.divetrip.application.dto.response.CountryResponse;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.response.CountryResponseMapper;
+import io.divetrip.library.domain.entity.Country;
+import io.divetrip.library.domain.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

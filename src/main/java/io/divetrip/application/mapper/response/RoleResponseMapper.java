@@ -1,7 +1,7 @@
 package io.divetrip.application.mapper.response;
 
-import io.divetrip.domain.entity.Role;
 import io.divetrip.application.dto.response.RoleResponse;
+import io.divetrip.library.domain.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

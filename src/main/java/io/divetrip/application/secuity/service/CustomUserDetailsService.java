@@ -1,8 +1,8 @@
 package io.divetrip.application.secuity.service;
 
-import io.divetrip.domain.entity.Diver;
-import io.divetrip.domain.entity.DiverRole;
-import io.divetrip.domain.repository.DiverRepository;
+import io.divetrip.library.domain.entity.Diver;
+import io.divetrip.library.domain.entity.DiverRole;
+import io.divetrip.library.domain.repository.DiverRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;

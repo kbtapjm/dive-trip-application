@@ -1,7 +1,6 @@
 package io.divetrip.application.service;
 
-import io.divetrip.domain.entity.Diver;
-import io.divetrip.domain.repository.DiverRepository;
+
 import io.divetrip.application.dto.request.AuthRequest;
 import io.divetrip.application.dto.response.AuthResponse;
 import io.divetrip.application.enumeration.DiveTripError;
@@ -9,6 +8,8 @@ import io.divetrip.application.mapper.request.AuthRequestMapper;
 import io.divetrip.application.secuity.component.JwtTokenProvider;
 import io.divetrip.application.secuity.enumeration.TokenType;
 import io.divetrip.application.secuity.service.AuthTokenService;
+import io.divetrip.library.domain.entity.Diver;
+import io.divetrip.library.domain.repository.DiverRepository;
 import io.jsonwebtoken.Claims;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;

@@ -1,8 +1,8 @@
 package io.divetrip.application.mapper.response;
 
-import io.divetrip.domain.entity.TripReservation;
-import io.divetrip.domain.repository.dto.response.TripReservationQueryResponse;
 import io.divetrip.application.dto.response.TripReservationResponse;
+import io.divetrip.library.domain.entity.TripReservation;
+import io.divetrip.library.domain.repository.dto.response.TripReservationQueryResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

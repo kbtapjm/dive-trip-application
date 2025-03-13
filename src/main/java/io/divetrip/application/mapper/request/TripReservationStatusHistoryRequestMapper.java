@@ -1,8 +1,8 @@
 package io.divetrip.application.mapper.request;
 
-import io.divetrip.domain.entity.TripReservation;
-import io.divetrip.domain.entity.TripReservationStatusHistory;
-import io.divetrip.domain.entity.enumeration.ReservationStatus;
+import io.divetrip.library.domain.entity.TripReservation;
+import io.divetrip.library.domain.entity.TripReservationStatusHistory;
+import io.divetrip.library.domain.entity.enumeration.ReservationStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

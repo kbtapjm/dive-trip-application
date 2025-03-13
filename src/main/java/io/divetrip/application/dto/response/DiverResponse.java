@@ -1,9 +1,9 @@
 package io.divetrip.application.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.divetrip.domain.dto.AddressDto;
-import io.divetrip.dto.PageDto;
 import io.divetrip.application.dto.request.DiverRequest;
+import io.divetrip.library.domain.dto.AddressDto;
+import io.divetrip.library.dto.PageDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

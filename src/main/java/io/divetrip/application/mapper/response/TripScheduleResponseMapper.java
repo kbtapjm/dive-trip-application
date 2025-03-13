@@ -1,7 +1,7 @@
 package io.divetrip.application.mapper.response;
 
-import io.divetrip.domain.entity.TripSchedule;
 import io.divetrip.application.dto.response.TripResponse;
+import io.divetrip.library.domain.entity.TripSchedule;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

@@ -1,8 +1,8 @@
 package io.divetrip.application.service;
 
-import io.divetrip.domain.entity.TripLodging;
-import io.divetrip.domain.repository.TripLodgingRepository;
 import io.divetrip.application.enumeration.DiveTripError;
+import io.divetrip.library.domain.entity.TripLodging;
+import io.divetrip.library.domain.repository.TripLodgingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,13 +1,13 @@
 package io.divetrip.application.service;
 
-import io.divetrip.domain.entity.Vessel;
-import io.divetrip.domain.entity.VesselCabin;
-import io.divetrip.domain.repository.VesselCabinRepository;
 import io.divetrip.application.dto.request.VesselCabinRequest;
 import io.divetrip.application.dto.response.VesselCabinResponse;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.VesselCabinCreateRequestMapper;
 import io.divetrip.application.mapper.response.VesselCabinResponseMapper;
+import io.divetrip.library.domain.entity.Vessel;
+import io.divetrip.library.domain.entity.VesselCabin;
+import io.divetrip.library.domain.repository.VesselCabinRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

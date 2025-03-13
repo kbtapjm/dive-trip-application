@@ -1,11 +1,11 @@
 package io.divetrip.application.controller;
 
-import io.divetrip.domain.entity.enumeration.VesselStatus;
-import io.divetrip.dto.PageDto;
 import io.divetrip.application.dto.request.VesselCabinRequest;
 import io.divetrip.application.dto.request.VesselRequest;
 import io.divetrip.application.service.VesselCabinService;
 import io.divetrip.application.service.VesselService;
+import io.divetrip.library.domain.entity.enumeration.VesselStatus;
+import io.divetrip.library.dto.PageDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

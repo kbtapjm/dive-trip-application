@@ -1,6 +1,6 @@
 package io.divetrip.application.controller;
 
-import io.divetrip.dto.PageDto;
+import io.divetrip.library.dto.PageDto;
 import io.divetrip.application.dto.request.DiverRequest;
 import io.divetrip.application.service.DiverService;
 import jakarta.validation.Valid;

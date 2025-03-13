@@ -1,8 +1,8 @@
 package io.divetrip.application.mapper.request;
 
-import io.divetrip.domain.entity.Trip;
-import io.divetrip.domain.entity.TripStatusHistory;
-import io.divetrip.domain.entity.enumeration.TripStatus;
+import io.divetrip.library.domain.entity.Trip;
+import io.divetrip.library.domain.entity.TripStatusHistory;
+import io.divetrip.library.domain.entity.enumeration.TripStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

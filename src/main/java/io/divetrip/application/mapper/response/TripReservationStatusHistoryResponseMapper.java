@@ -1,7 +1,7 @@
 package io.divetrip.application.mapper.response;
 
-import io.divetrip.domain.entity.TripReservationStatusHistory;
 import io.divetrip.application.dto.response.TripReservationStatusHistoryResponse;
+import io.divetrip.library.domain.entity.TripReservationStatusHistory;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

@@ -1,12 +1,12 @@
 package io.divetrip.application.service;
 
-import io.divetrip.domain.entity.Role;
-import io.divetrip.domain.repository.RoleRepository;
 import io.divetrip.application.dto.request.RoleRequest;
 import io.divetrip.application.dto.response.RoleResponse;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.RoleCreateRequestMapper;
 import io.divetrip.application.mapper.response.RoleResponseMapper;
+import io.divetrip.library.domain.entity.Role;
+import io.divetrip.library.domain.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;

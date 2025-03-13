@@ -1,7 +1,7 @@
 package io.divetrip.application.mapper.response;
 
-import io.divetrip.domain.entity.Country;
 import io.divetrip.application.dto.response.CountryResponse;
+import io.divetrip.library.domain.entity.Country;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

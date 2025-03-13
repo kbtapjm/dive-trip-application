@@ -1,8 +1,8 @@
 package io.divetrip.application.mapper.response;
 
-import io.divetrip.domain.entity.Trip;
-import io.divetrip.domain.repository.dto.response.TripQueryResponse;
 import io.divetrip.application.dto.response.TripResponse;
+import io.divetrip.library.domain.entity.Trip;
+import io.divetrip.library.domain.repository.dto.response.TripQueryResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
