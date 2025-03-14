@@ -3,7 +3,7 @@ package io.divetrip.application.exception.handler;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.exception.dto.ExceptionResponse;
 import io.divetrip.application.exception.error.DiveTripException;
-import io.divetrip.application.util.MessageUtils;
+import io.divetrip.library.util.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
