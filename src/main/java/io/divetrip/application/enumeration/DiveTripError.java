@@ -10,7 +10,7 @@ public enum DiveTripError {
     // common
     INVALID_INPUT_VALUE("E001", "invalid.input.value", 400),
     INVALID_TYPE_VALUE("E002", "invalid.type.value", 400),
-    RESOURCE_NOT_FOUND("E003", "resource.not.found", 404),
+    //RESOURCE_NOT_FOUND("E003", "resource.not.found", 404),
     METHOD_NOT_ALLOWED("E004", "method.not.allowed", 405),
     INTERNAL_SERVER_ERROR("E005", "internal.server.error", 500),
 
@@ -56,7 +56,12 @@ public enum DiveTripError {
 
     // role
     ROLE_CODE_DUPLICATED("E701", "valid.role-code.already.exists", 400),
-    ROLE_NOT_FOUND("E702", "valid.role.not.found", 404);
+    ROLE_NOT_FOUND("E702", "valid.role.not.found", 404),
+
+    // resource
+    RESOURCE_URL_DUPLICATED("E801", "valid.resource-url.already.exists", 400),
+    RESOURCE_NOT_FOUND("E802", "valid.resource.not.found", 404)
+    ;
 
     private final String code;
     private final String message;
