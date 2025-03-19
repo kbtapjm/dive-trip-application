@@ -37,7 +37,8 @@ public class ResourceService {
     }
 
     public List<ResourceResponse.Resources> getResources() {
-        return resourceRepository.findAll().stream()
+        // TODO: querydsl 로 변경 필요
+        return resourceRepository.findByOrderByResourceOrderAsc().stream()
                 .map(resourceResponseMapper::toResources)
                 .collect(Collectors.toList());
     }
