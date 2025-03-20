@@ -60,4 +60,30 @@ public class ResourceRequest {
         private Integer resourceOrder;
     }
 
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    @ToString
+    public static class SearchResource {
+        /* 그룹 ID */
+        private UUID groupId;
+
+        /* 리소스 명 */
+        private String resourceName;
+
+        /* 사용 여부 */
+        private Boolean used;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    @ToString
+    public static class UpdateUsed {
+        /* 사용 여부 */
+        private Boolean used;
+    }
+
 }

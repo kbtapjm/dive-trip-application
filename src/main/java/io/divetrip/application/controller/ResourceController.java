@@ -10,11 +10,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -45,8 +47,18 @@ public class ResourceController {
     }
 
     @GetMapping(value = "/resources", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getResources() {
-        return ResponseEntity.ok(resourceService.getResources());
+    public ResponseEntity<?> getResources(
+            @RequestParam(value = "groupId", required = false, defaultValue = "") UUID groupId,
+            @RequestParam(value = "resourceName", required = false, defaultValue = "") String resourceName,
+            @RequestParam(value = "used", required = false) Boolean used
+    ) {
+        ResourceRequest.SearchResource searchDto = ResourceRequest.SearchResource.builder()
+                .groupId(groupId)
+                .resourceName(resourceName)
+                .used(used)
+                .build();
+
+        return ResponseEntity.ok(resourceService.getResources(searchDto));
     }
 
     @GetMapping(value = "/resources/{resourceId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,6 +73,13 @@ public class ResourceController {
         }
 
         resourceService.updateResource(resourceId, dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping(value = "/resources/{resourceId}/used", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateResourceUsed(@PathVariable UUID resourceId, @Valid @RequestBody ResourceRequest.UpdateUsed dto) {
+        resourceService.updateResourceUsed(resourceId, dto);
 
         return ResponseEntity.ok().build();
     }

@@ -5,10 +5,12 @@ import io.divetrip.application.dto.response.ResourceResponse;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.ResourceCreateRequestMapper;
 import io.divetrip.application.mapper.response.ResourceResponseMapper;
+import io.divetrip.application.service.support.ResourceSpecification;
 import io.divetrip.library.domain.entity.Resource;
 import io.divetrip.library.domain.repository.ResourceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,9 +38,9 @@ public class ResourceService {
         return resourceResponseMapper.toResource(resource);
     }
 
-    public List<ResourceResponse.Resources> getResources() {
-        // TODO: querydsl 로 변경 필요
-        return resourceRepository.findByOrderByResourceOrderAsc().stream()
+    public List<ResourceResponse.Resources> getResources(ResourceRequest.SearchResource searchDto) {
+        return resourceRepository.findAll(new ResourceSpecification(searchDto), Sort.by(Sort.Direction.ASC, "resourceOrder"))
+                .stream()
                 .map(resourceResponseMapper::toResources)
                 .collect(Collectors.toList());
     }
@@ -62,7 +64,19 @@ public class ResourceService {
     public void deleteResource(final UUID resourceId) {
         Resource resource = this.getResourceByResourceId(resourceId);
 
+        List<Resource> resources = resourceRepository.findByGroupId(resource.getGroupId());
+        if (!resources.isEmpty()) {
+            throw DiveTripError.RESOURCE_CAN_NOT_DELETED.exception();
+        }
+
         resourceRepository.deleteById(resourceId);
+    }
+
+    @Transactional
+    public void updateResourceUsed(final UUID resourceId, final ResourceRequest.UpdateUsed dto) {
+        Resource resource = this.getResourceByResourceId(resourceId);
+
+        resource.updateUsed(dto.getUsed());
     }
 
     private Resource getResourceByResourceId(final UUID resourceId) {

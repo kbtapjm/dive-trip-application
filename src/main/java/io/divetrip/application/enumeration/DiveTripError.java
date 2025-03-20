@@ -60,7 +60,8 @@ public enum DiveTripError {
 
     // resource
     RESOURCE_URL_DUPLICATED("E801", "valid.resource-url.already.exists", 400),
-    RESOURCE_NOT_FOUND("E802", "valid.resource.not.found", 404)
+    RESOURCE_NOT_FOUND("E802", "valid.resource.not.found", 404),
+    RESOURCE_CAN_NOT_DELETED("E803", "valid.resource.can.not.deleted", 400)
     ;
 
     private final String code;
