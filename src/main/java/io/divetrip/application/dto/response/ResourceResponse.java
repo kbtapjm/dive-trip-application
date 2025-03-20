@@ -1,6 +1,7 @@
 package io.divetrip.application.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class ResourceResponse {
@@ -16,6 +18,7 @@ public class ResourceResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Resources {
         /* 리소스 ID */
         private UUID resourceId;
@@ -51,6 +54,10 @@ public class ResourceResponse {
         /* 수정일 */
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+9")
         private LocalDateTime updatedAt;
+
+        /* 하위 리소스 목록 */
+        @Builder.Default
+        private List<Resource> subResources = List.of();
     }
 
     @Getter

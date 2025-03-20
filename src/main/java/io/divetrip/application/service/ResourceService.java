@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -39,9 +40,26 @@ public class ResourceService {
     }
 
     public List<ResourceResponse.Resources> getResources(ResourceRequest.SearchResource searchDto) {
-        return resourceRepository.findAll(new ResourceSpecification(searchDto), Sort.by(Sort.Direction.ASC, "resourceOrder"))
-                .stream()
-                .map(resourceResponseMapper::toResources)
+        List<Resource> resources = resourceRepository.findAll(new ResourceSpecification(searchDto), Sort.by(Sort.Direction.ASC, "resourceOrder"));
+
+        return resources.stream()
+                .map(m -> {
+                    List<ResourceResponse.Resource> subResources = List.of();
+                    if (Objects.isNull(searchDto.getGroupId())) {
+                        ResourceRequest.SearchResource searchSubResource = ResourceRequest.SearchResource.builder()
+                                .groupId(m.getResourceId())
+                                .resourceName(searchDto.getResourceName())
+                                .used(searchDto.getUsed())
+                                .build();
+
+                        subResources = resourceRepository.findAll(new ResourceSpecification(searchSubResource), Sort.by(Sort.Direction.ASC, "resourceOrder"))
+                                .stream()
+                                .map(resourceResponseMapper::toResource)
+                                .collect(Collectors.toList());
+                    }
+
+                    return resourceResponseMapper.toResources(m, subResources);
+                })
                 .collect(Collectors.toList());
     }
 
