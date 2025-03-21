@@ -97,7 +97,7 @@ public class ResourceService {
         resource.updateUsed(dto.getUsed());
     }
 
-    private Resource getResourceByResourceId(final UUID resourceId) {
+    public Resource getResourceByResourceId(final UUID resourceId) {
         return resourceRepository.findById(resourceId)
                 .orElseThrow(() ->  DiveTripError.RESOURCE_NOT_FOUND.exception(resourceId.toString()));
     }
