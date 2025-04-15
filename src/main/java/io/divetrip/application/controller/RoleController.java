@@ -1,6 +1,7 @@
 package io.divetrip.application.controller;
 
 import io.divetrip.application.dto.request.RoleRequest;
+import io.divetrip.application.dto.request.RoleResourceRequest;
 import io.divetrip.application.dto.response.RoleResponse;
 import io.divetrip.application.service.RoleService;
 import jakarta.validation.Valid;
@@ -66,10 +67,26 @@ public class RoleController {
     }
 
     @DeleteMapping(value = "/roles/{roleId}")
-    public ResponseEntity<?> deleteVessel(@PathVariable UUID roleId) {
+    public ResponseEntity<?> deleteRole(@PathVariable UUID roleId) {
         roleService.deleteRole(roleId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/roles/{roleId}/resources", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createRoleResource(@PathVariable UUID roleId, @Valid @RequestBody RoleResourceRequest.CreateRoleResource dto) {
+        if (log.isDebugEnabled()) {
+            log.debug("RoleResourceRequest.CreateRoleResource: {}", dto.toString());
+        }
+
+        String roleResourceId = roleService.createRoleResource(roleId, dto);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{roleResourceId}")
+                .buildAndExpand(roleResourceId)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
 }

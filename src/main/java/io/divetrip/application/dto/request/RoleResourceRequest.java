@@ -20,10 +20,6 @@ public class RoleResourceRequest {
     @Builder
     @ToString
     public static class CreateRoleResource {
-        /* 역할 ID */
-        @NotNull
-        private UUID roleId;
-
         /* 리소스 ID */
         @NotNull
         private UUID resourceId;

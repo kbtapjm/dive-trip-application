@@ -1,12 +1,18 @@
 package io.divetrip.application.service;
 
 import io.divetrip.application.dto.request.RoleRequest;
+import io.divetrip.application.dto.request.RoleResourceRequest;
 import io.divetrip.application.dto.response.RoleResponse;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.RoleCreateRequestMapper;
+import io.divetrip.application.mapper.request.RoleResourceCreateRequestMapper;
+import io.divetrip.application.mapper.request.RoleResourcePermissionCreateRequestMapper;
 import io.divetrip.application.mapper.response.RoleResponseMapper;
+import io.divetrip.library.domain.entity.Resource;
 import io.divetrip.library.domain.entity.Role;
+import io.divetrip.library.domain.entity.RoleResource;
 import io.divetrip.library.domain.repository.RoleRepository;
+import io.divetrip.library.domain.repository.RoleResourceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,8 +31,12 @@ import java.util.stream.Collectors;
 public class RoleService {
 
     private final RoleRepository roleRepository;
+    private final RoleResourceRepository roleResourceRepository;
     private final RoleCreateRequestMapper roleCreateRequestMapper;
     private final RoleResponseMapper roleResponseMapper;
+    private final RoleResourceCreateRequestMapper roleResourceCreateRequestMapper;
+    private final RoleResourcePermissionCreateRequestMapper roleResourcePermissionCreateRequestMapper;
+    private final ResourceService resourceService;
 
     @Transactional
     @CacheEvict(cacheNames = "roles", key = "'all'")
@@ -74,6 +84,29 @@ public class RoleService {
         Role role = this.getRoleByRoleId(roleId);
 
         roleRepository.delete(role);
+    }
+
+    @Transactional
+    public String createRoleResource(final UUID roleId, final RoleResourceRequest.CreateRoleResource dto) {
+        /* get role by */
+        Role role = this.getRoleByRoleId(roleId);
+
+        /* get resource by */
+        Resource resource = resourceService.getResourceByResourceId(dto.getResourceId());
+
+        /* set role resource */
+        RoleResource roleResource = roleResourceRepository.save(roleResourceCreateRequestMapper.toEntity(role, resource));
+
+        /* set role resource permission */
+        roleResource.addAllPermissions(
+                dto.getPermissions().stream()
+                        .map(permission -> {
+                            return roleResourcePermissionCreateRequestMapper.toEntity(permission, roleResource);
+                        })
+                        .collect(Collectors.toList())
+        );
+
+        return roleResource.getRoleResourceId().toString();
     }
 
     public Role getRoleByRoleId(final UUID roleId) {
