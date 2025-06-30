@@ -89,4 +89,9 @@ public class RoleController {
         return ResponseEntity.created(location).build();
     }
 
+    @GetMapping(value = "/roles/{roleId}/resources", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getRoleResource(@PathVariable UUID roleId) {
+        return ResponseEntity.ok(roleService.getRoleResource(roleId));
+    }
+
 }

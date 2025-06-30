@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("user not found: %s", username)));
     }
 
-    private org.springframework.security.core.userdetails.User getDiver(Diver diver) {
+    private User getDiver(Diver diver) {
         if (diver.getDiverRoles().isEmpty()) {
             throw new RuntimeException("권한이 없어서 사이트에 접근 할 수 없습니다");
         }
@@ -38,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .map(role -> new SimpleGrantedAuthority(role.getRoleCode()))
                 .collect(Collectors.toList());
 
-        return new org.springframework.security.core.userdetails.User(diver.getEmail(), diver.getPassword(), authorities);
+        return new User(diver.getEmail(), diver.getPassword(), authorities);
     }
 
 }

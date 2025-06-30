@@ -2,11 +2,15 @@ package io.divetrip.application.service;
 
 import io.divetrip.application.dto.request.RoleRequest;
 import io.divetrip.application.dto.request.RoleResourceRequest;
+import io.divetrip.application.dto.response.RoleResourceResponse;
 import io.divetrip.application.dto.response.RoleResponse;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.RoleCreateRequestMapper;
 import io.divetrip.application.mapper.request.RoleResourceCreateRequestMapper;
 import io.divetrip.application.mapper.request.RoleResourcePermissionCreateRequestMapper;
+import io.divetrip.application.mapper.response.ResourceResponseMapper;
+import io.divetrip.application.mapper.response.RoleResourcePermissionResponseMapper;
+import io.divetrip.application.mapper.response.RoleResourceResponseMapper;
 import io.divetrip.application.mapper.response.RoleResponseMapper;
 import io.divetrip.library.domain.entity.Resource;
 import io.divetrip.library.domain.entity.Role;
@@ -29,13 +33,15 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RoleService {
-
     private final RoleRepository roleRepository;
     private final RoleResourceRepository roleResourceRepository;
     private final RoleCreateRequestMapper roleCreateRequestMapper;
-    private final RoleResponseMapper roleResponseMapper;
     private final RoleResourceCreateRequestMapper roleResourceCreateRequestMapper;
     private final RoleResourcePermissionCreateRequestMapper roleResourcePermissionCreateRequestMapper;
+    private final RoleResponseMapper roleResponseMapper;
+    private final RoleResourceResponseMapper roleResourceResponseMapper;
+    private final ResourceResponseMapper resourceResponseMapper;
+    private final RoleResourcePermissionResponseMapper roleResourcePermissionResponseMapper;
     private final ResourceService resourceService;
 
     @Transactional
@@ -109,9 +115,34 @@ public class RoleService {
         return roleResource.getRoleResourceId().toString();
     }
 
+    public List<RoleResourceResponse.RoleResources> getRoleResource(final UUID roleId) {
+        /* get role by */
+        Role role = this.getRoleByRoleId(roleId);
+
+        /* get role resource by */
+        List<RoleResource> roleResources = roleResourceRepository.findByRole(role);
+
+        return roleResources.stream()
+                .map(roleResource -> {
+                    return roleResourceResponseMapper.toRoleResources(
+                            roleResource.getResource(),
+                            roleResource.getPermissions().stream()
+                                    .map(roleResourcePermissionResponseMapper::toResourcePermission)
+                                    .collect(Collectors.toList()),
+                            roleResource
+                    );
+                })
+                .collect(Collectors.toList());
+    }
+
     public Role getRoleByRoleId(final UUID roleId) {
         return roleRepository.findById(roleId)
                 .orElseThrow(() ->  DiveTripError.ROLE_NOT_FOUND.exception(roleId.toString()));
+    }
+
+    public RoleResource getRoleResourceById(final UUID roleResourceId) {
+        return roleResourceRepository.findById(roleResourceId)
+                .orElseThrow(() ->  DiveTripError.ROLE_RESOURCE_NOT_FOUND.exception(roleResourceId.toString()));
     }
 
 }
