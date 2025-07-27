@@ -135,7 +135,7 @@ public class RoleService {
                 .collect(Collectors.toList());
     }
 
-    public RoleResourceResponse.RoleResources getRoleResource(final UUID roleId, UUID roleResourceId) {
+    public RoleResourceResponse.RoleResources getRoleResource(final UUID roleId, final UUID roleResourceId) {
         /* get role by */
         Role role = this.getRoleByRoleId(roleId);
 
@@ -149,6 +149,18 @@ public class RoleService {
                         .collect(Collectors.toList()),
                 roleResource
         );
+    }
+
+    @Transactional
+    public void deleteRoleResource(final UUID roleId, final UUID roleResourceId) {
+        /* get role by */
+        Role role = this.getRoleByRoleId(roleId);
+
+        /* get role resource by */
+        RoleResource roleResource = this.getRoleResourceById(roleResourceId);
+
+        /* delete role resource */
+        roleResourceRepository.delete(roleResource);
     }
 
     public Role getRoleByRoleId(final UUID roleId) {

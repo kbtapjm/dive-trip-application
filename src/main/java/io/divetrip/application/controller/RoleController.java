@@ -99,4 +99,11 @@ public class RoleController {
         return ResponseEntity.ok(roleService.getRoleResource(roleId, roleResourceId));
     }
 
+    @DeleteMapping(value = "/roles/{roleId}/resources/{roleResourceId}")
+    public ResponseEntity<?> deleteRoleResource(@PathVariable UUID roleId, @PathVariable UUID roleResourceId) {
+        roleService.deleteRoleResource(roleId, roleResourceId);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
