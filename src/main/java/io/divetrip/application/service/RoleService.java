@@ -115,7 +115,7 @@ public class RoleService {
         return roleResource.getRoleResourceId().toString();
     }
 
-    public List<RoleResourceResponse.RoleResources> getRoleResource(final UUID roleId) {
+    public List<RoleResourceResponse.RoleResources> getRoleResources(final UUID roleId) {
         /* get role by */
         Role role = this.getRoleByRoleId(roleId);
 
@@ -133,6 +133,22 @@ public class RoleService {
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    public RoleResourceResponse.RoleResources getRoleResource(final UUID roleId, UUID roleResourceId) {
+        /* get role by */
+        Role role = this.getRoleByRoleId(roleId);
+
+        /* get role resource by */
+        RoleResource roleResource = this.getRoleResourceById(roleResourceId);
+
+        return roleResourceResponseMapper.toRoleResources(
+                roleResource.getResource(),
+                roleResource.getPermissions().stream()
+                        .map(roleResourcePermissionResponseMapper::toResourcePermission)
+                        .collect(Collectors.toList()),
+                roleResource
+        );
     }
 
     public Role getRoleByRoleId(final UUID roleId) {

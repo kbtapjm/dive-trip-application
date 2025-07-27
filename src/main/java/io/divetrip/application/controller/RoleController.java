@@ -90,8 +90,13 @@ public class RoleController {
     }
 
     @GetMapping(value = "/roles/{roleId}/resources", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getRoleResource(@PathVariable UUID roleId) {
-        return ResponseEntity.ok(roleService.getRoleResource(roleId));
+    public ResponseEntity<?> getRoleResources(@PathVariable UUID roleId) {
+        return ResponseEntity.ok(roleService.getRoleResources(roleId));
+    }
+
+    @GetMapping(value = "/roles/{roleId}/resources/{roleResourceId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getRoleResource(@PathVariable UUID roleId, @PathVariable UUID roleResourceId) {
+        return ResponseEntity.ok(roleService.getRoleResource(roleId, roleResourceId));
     }
 
 }
