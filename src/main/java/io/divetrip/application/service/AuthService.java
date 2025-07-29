@@ -7,9 +7,10 @@ import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.AuthRequestMapper;
 import io.divetrip.application.secuity.component.JwtTokenProvider;
 import io.divetrip.application.secuity.enumeration.TokenType;
-import io.divetrip.application.secuity.service.AuthTokenService;
 import io.divetrip.library.domain.entity.Diver;
+import io.divetrip.library.domain.entity.DiverLoginHistory;
 import io.divetrip.library.domain.repository.DiverRepository;
+import io.divetrip.library.util.IpUtils;
 import io.jsonwebtoken.Claims;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
@@ -43,7 +44,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final AuthTokenService authTokenService;
+    private final DiverLoginHistoryService diverLoginHistoryService;
+
     private final RedisTemplate<String, Object> redisTemplate;
 
     public AuthResponse.Token authenticate(final AuthRequest.Login dto) {
@@ -81,6 +83,16 @@ public class AuthService {
         hashOperations.putAll(refreshToken, authTokenMap);
 
         redisTemplate.expire(refreshToken, Duration.between(LocalDateTime.now(), expirationLocalDateTime).getSeconds(), TimeUnit.SECONDS);
+
+        // create login log
+        Diver diver = diverRepository.findByEmail(authentication.getName()).get();
+
+        DiverLoginHistory diverLoginHistory = DiverLoginHistory.builder()
+                .ipAddress(IpUtils.getIpFromHeader())
+                .diver(diver)
+                .build();
+
+        diverLoginHistoryService.createDiverLoginHistory(diverLoginHistory);
 
         return AuthResponse.Token.builder()
                 .accessToken(accessToken)
