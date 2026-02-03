@@ -34,6 +34,13 @@ spring:
       remote:
         restart:
           enabled: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 20260202
+    locations:
+      - classpath:db/migration
+      - classpath:db/seed
 
 spring-doc:
   swagger-ui:
