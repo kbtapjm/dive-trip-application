@@ -21,6 +21,10 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
-test {
-    useJUnitPlatform()
+//test {
+//    useJUnitPlatform()
+//}
+
+springBoot {
+    mainClass.set("io.divetrip.application.DiveTripApplication")
 }
