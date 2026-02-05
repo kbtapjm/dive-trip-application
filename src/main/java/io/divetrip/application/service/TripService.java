@@ -20,7 +20,6 @@ import io.divetrip.library.domain.repository.TripRepository;
 import io.divetrip.library.domain.repository.dto.request.TripQueryRequest;
 import io.divetrip.library.domain.repository.dto.response.TripQueryResponse;
 import io.divetrip.library.dto.PageDto;
-import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -183,7 +182,7 @@ public class TripService {
     }
 
     @Retryable(
-            value = OptimisticLockException.class, // 변경된 레코드 수가 0개일 때, 발생하는 예외
+            //value = OptimisticLockException.class, // 변경된 레코드 수가 0개일 때, 발생하는 예외
             maxAttempts = 5, // 최대 실행 횟수
             backoff = @Backoff(
                     random = true, // 재시도 시간 랜덤 적용 여부
