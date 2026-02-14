@@ -3,11 +3,11 @@ package io.divetrip.application.service;
 import io.divetrip.application.dto.request.PaymentRequest;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.PaymentCreateRequestMapper;
+import io.divetrip.application.util.IpUtils;
 import io.divetrip.library.domain.entity.Payment;
 import io.divetrip.library.domain.entity.TripReservation;
 import io.divetrip.library.domain.entity.enumeration.PaymentStatus;
 import io.divetrip.library.domain.repository.PaymentRepository;
-import io.divetrip.library.util.IpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

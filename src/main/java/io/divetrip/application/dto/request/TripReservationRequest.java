@@ -1,8 +1,8 @@
 package io.divetrip.application.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.divetrip.application.dto.SearchDto;
 import io.divetrip.library.domain.entity.enumeration.ReservationStatus;
-import io.divetrip.library.dto.SearchDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

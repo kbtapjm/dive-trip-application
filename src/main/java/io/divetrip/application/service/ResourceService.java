@@ -5,7 +5,7 @@ import io.divetrip.application.dto.response.ResourceResponse;
 import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.ResourceCreateRequestMapper;
 import io.divetrip.application.mapper.response.ResourceResponseMapper;
-import io.divetrip.application.service.support.ResourceSpecification;
+import io.divetrip.library.common.domain.ResourceSpecification;
 import io.divetrip.library.domain.entity.Resource;
 import io.divetrip.library.domain.repository.ResourceRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,19 +40,26 @@ public class ResourceService {
     }
 
     public List<ResourceResponse.Resources> getResources(ResourceRequest.SearchResource searchDto) {
-        List<Resource> resources = resourceRepository.findAll(new ResourceSpecification(searchDto), Sort.by(Sort.Direction.ASC, "resourceOrder"));
+        ResourceSpecification resourceSpecification = new ResourceSpecification(
+                searchDto.getGroupId(),
+                searchDto.getResourceName(),
+                searchDto.getUsed()
+        );
+
+        List<Resource> resources = resourceRepository.findAll(resourceSpecification, Sort.by(Sort.Direction.ASC, "resourceOrder"));
 
         return resources.stream()
                 .map(m -> {
                     List<ResourceResponse.Resource> subResources = List.of();
                     if (Objects.isNull(searchDto.getGroupId())) {
-                        ResourceRequest.SearchResource searchSubResource = ResourceRequest.SearchResource.builder()
-                                .groupId(m.getResourceId())
-                                .resourceName(searchDto.getResourceName())
-                                .used(searchDto.getUsed())
-                                .build();
 
-                        subResources = resourceRepository.findAll(new ResourceSpecification(searchSubResource), Sort.by(Sort.Direction.ASC, "resourceOrder"))
+                        ResourceSpecification searchSubResourceSpecification = new ResourceSpecification(
+                                searchDto.getGroupId(),
+                                searchDto.getResourceName(),
+                                searchDto.getUsed()
+                        );
+
+                        subResources = resourceRepository.findAll(searchSubResourceSpecification, Sort.by(Sort.Direction.ASC, "resourceOrder"))
                                 .stream()
                                 .map(resourceResponseMapper::toResource)
                                 .collect(Collectors.toList());

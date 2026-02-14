@@ -1,9 +1,8 @@
 package io.divetrip.application.mapper.request;
 
-
 import io.divetrip.application.dto.request.RoleRequest;
+import io.divetrip.application.mapper.GenericMapper;
 import io.divetrip.library.domain.entity.Role;
-import io.divetrip.library.mapper.GenericMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

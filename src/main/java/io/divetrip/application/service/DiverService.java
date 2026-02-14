@@ -1,5 +1,6 @@
 package io.divetrip.application.service;
 
+import io.divetrip.application.dto.PageDto;
 import io.divetrip.application.dto.request.DiverRequest;
 import io.divetrip.application.dto.response.DiverResponse;
 import io.divetrip.application.dto.response.RoleResponse;
@@ -7,13 +8,12 @@ import io.divetrip.application.enumeration.DiveTripError;
 import io.divetrip.application.mapper.request.DiverCreateRequestMapper;
 import io.divetrip.application.mapper.response.DiverResponseMapper;
 import io.divetrip.application.mapper.response.RoleResponseMapper;
-import io.divetrip.application.service.support.DiverSpecification;
+import io.divetrip.library.common.domain.DiverSpecification;
 import io.divetrip.library.domain.entity.Diver;
 import io.divetrip.library.domain.entity.DiverRole;
 import io.divetrip.library.domain.entity.Role;
 import io.divetrip.library.domain.entity.enumeration.Gender;
 import io.divetrip.library.domain.repository.DiverRepository;
-import io.divetrip.library.dto.PageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -52,7 +52,7 @@ public class DiverService {
     public DiverResponse.DiverList getDiversAll(PageDto pageDto, DiverRequest.SearchDiver searchDto) {
         PageRequest pageRequest = PageRequest.of(pageDto.getPageNumber(), pageDto.getPageSize(), searchDto.getPageSort());
 
-        Page<Diver> page = diverRepository.findAll(new DiverSpecification(searchDto), pageRequest);
+        Page<Diver> page = diverRepository.findAll(new DiverSpecification(searchDto.getName(), searchDto.getGender()), pageRequest);
         pageDto.setPage(pageDto.getPageNumber(), pageDto.getPageSize(), page.getTotalElements(), page.getTotalPages());
 
         return DiverResponse.DiverList.builder()

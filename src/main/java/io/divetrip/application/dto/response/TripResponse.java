@@ -1,10 +1,10 @@
 package io.divetrip.application.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.divetrip.application.dto.PageDto;
 import io.divetrip.application.dto.request.TripRequest;
 import io.divetrip.library.domain.entity.enumeration.TripStatus;
 import io.divetrip.library.domain.entity.enumeration.VesselStatus;
-import io.divetrip.library.dto.PageDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

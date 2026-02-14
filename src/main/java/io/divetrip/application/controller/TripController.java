@@ -1,9 +1,9 @@
 package io.divetrip.application.controller;
 
+import io.divetrip.application.dto.PageDto;
 import io.divetrip.application.dto.request.TripRequest;
 import io.divetrip.application.service.TripService;
 import io.divetrip.library.domain.entity.enumeration.TripStatus;
-import io.divetrip.library.dto.PageDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

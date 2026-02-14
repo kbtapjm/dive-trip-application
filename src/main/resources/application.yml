@@ -11,6 +11,8 @@ server:
       enabled: true
 
 spring:
+  profiles:
+    active: dev
   cache: redis
 
 management:

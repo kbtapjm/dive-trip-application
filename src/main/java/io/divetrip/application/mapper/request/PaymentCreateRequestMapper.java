@@ -1,11 +1,10 @@
 package io.divetrip.application.mapper.request;
 
-
 import io.divetrip.application.dto.request.PaymentRequest;
+import io.divetrip.application.mapper.GenericMapper;
 import io.divetrip.library.domain.entity.Payment;
 import io.divetrip.library.domain.entity.TripReservation;
 import io.divetrip.library.domain.entity.enumeration.PaymentStatus;
-import io.divetrip.library.mapper.GenericMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

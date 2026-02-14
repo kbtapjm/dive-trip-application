@@ -2,9 +2,9 @@ package io.divetrip.application.mapper.request;
 
 
 import io.divetrip.application.dto.request.VesselCabinRequest;
+import io.divetrip.application.mapper.GenericMapper;
 import io.divetrip.library.domain.entity.Vessel;
 import io.divetrip.library.domain.entity.VesselCabin;
-import io.divetrip.library.mapper.GenericMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

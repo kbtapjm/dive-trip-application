@@ -1,5 +1,6 @@
 package io.divetrip.application.service;
 
+import io.divetrip.application.dto.PageDto;
 import io.divetrip.application.dto.request.TripRequest;
 import io.divetrip.application.dto.response.TripResponse;
 import io.divetrip.application.enumeration.DiveTripError;
@@ -19,7 +20,6 @@ import io.divetrip.library.domain.entity.Vessel;
 import io.divetrip.library.domain.repository.TripRepository;
 import io.divetrip.library.domain.repository.dto.request.TripQueryRequest;
 import io.divetrip.library.domain.repository.dto.response.TripQueryResponse;
-import io.divetrip.library.dto.PageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

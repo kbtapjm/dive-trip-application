@@ -6,7 +6,7 @@ spring:
     name: dive-trip-application
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/dive_trip?characterEncoding=UTF-8
+    url: jdbc:mariadb://localhost:3306/dive_trip?rewriteBatchedStatements=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: master
     password: 1234
   jpa:
@@ -35,7 +35,7 @@ spring:
         restart:
           enabled: false
   flyway:
-    enabled: true
+    enabled: false
     baseline-on-migrate: true
     baseline-version: 20260202
     locations:

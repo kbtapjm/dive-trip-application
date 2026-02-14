@@ -1,6 +1,6 @@
 package io.divetrip.application.service;
 
-
+import io.divetrip.application.dto.PageDto;
 import io.divetrip.application.dto.request.PaymentRequest;
 import io.divetrip.application.dto.request.TripReservationRequest;
 import io.divetrip.application.dto.response.PaymentResponse;
@@ -23,7 +23,6 @@ import io.divetrip.library.domain.entity.enumeration.ReservationStatus;
 import io.divetrip.library.domain.repository.TripReservationRepository;
 import io.divetrip.library.domain.repository.dto.request.TripReservationQueryRequest;
 import io.divetrip.library.domain.repository.dto.response.TripReservationQueryResponse;
-import io.divetrip.library.dto.PageDto;
 import io.divetrip.library.message.model.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
